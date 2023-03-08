@@ -3,10 +3,10 @@
 pragma solidity 0.8.19;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
-/// @title A voting system contract
+///  @title A voting system contract
 ///  @author Kevin and Loic
 ///  @notice You can use this contract to manage a vote session
-///  @This contract extends OpenZeppelin's Ownable contract
+///  @dev contract extends OpenZeppelin's Ownable contract
 contract Voting is Ownable { 
     uint public winningProposalID;
 
@@ -27,7 +27,7 @@ contract Voting is Ownable {
         ProposalsRegistrationEnded,
         VotingSessionStarted,
         VotingSessionEnded,
-     // VotesTallied
+        VotesTallied
     }
 
     WorkflowStatus public workflowStatus;
@@ -119,8 +119,10 @@ contract Voting is Ownable {
         emit Voted(msg.sender, _id);
 
         //Calculate the winningProposalID to protect the contract from an attack
-        if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount){
-            winningProposalID=_id;
+        if (_id != winningProposalID) {
+            if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount){
+                winningProposalID=_id;
+            }
         }
     }
 
@@ -167,19 +169,9 @@ contract Voting is Ownable {
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
     }
 
-    //Security to protect the contract to the Dos attack
-    //function tallyVotes() external onlyOwner {
-    //  require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
-    //vote count is now done in setVote function
-    //  uint _winningProposalId;
-    //  for (uint256 p = 0; p < proposalsArray.length; p++) {
-    //      if (proposalsArray[p].voteCount > proposalsArray[_winningProposalId].voteCount) {
-    //        _winningProposalId = p;
-    //      }
-    //  }
-    //  winningProposalID = _winningProposalId;*/
-
-    //  workflowStatus = WorkflowStatus.VotesTallied;
-    //  emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
-  //  }
+    function tallyVotes() external onlyOwner {
+      require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
+      workflowStatus = WorkflowStatus.VotesTallied;
+      emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
+    }
 }
