@@ -3,10 +3,10 @@
 pragma solidity 0.8.19;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
-/** @title A vote session
- *  @author Kevin and Loic
- *  @notice You can use this contract to manage a vote session
- */
+/// @title A voting system contract
+///  @author Kevin and Loic
+///  @notice You can use this contract to manage a vote session
+///  @This contract extends OpenZeppelin's Ownable contract
 contract Voting is Ownable { 
     uint public winningProposalID;
 
@@ -27,7 +27,7 @@ contract Voting is Ownable {
         ProposalsRegistrationEnded,
         VotingSessionStarted,
         VotingSessionEnded,
-        VotesTallied
+     // VotesTallied
     }
 
     WorkflowStatus public workflowStatus;
@@ -45,23 +45,24 @@ contract Voting is Ownable {
         _;
     }
 
-    // on peut faire un modifier pour les états
+    
 
     // ::::::::::::: GETTERS ::::::::::::: //
-    /** @notice Returns voter's information from an address
-     *  @dev Only registred voter can use the function
-     *  @param  _addr voter address you want to query
-     *  @return Voter struct.
-     */
+
+    /// @notice Use this feature to retrieve voter data
+    /// @dev Retrieve voter mapping data
+    /// @param  _addr voter address
+    /// @return Voter struct
+
     function getVoter(address _addr) external onlyVoters view returns (Voter memory) {
         return voters[_addr];
     }
 
-    /** @notice Returns proposal's information from an ID
-     *  @dev Only registred voter can use the function
-     *  @param  _id proposal ID you want to query
-     *  @return Proposal struct.
-     */
+    /// @notice Use this feature to retrieve proposal data
+    /// @dev Retrieve proposal array data
+    /// @param  _id proposal ID 
+    /// @return Proposal struct
+
     function getOneProposal(uint _id) external onlyVoters view returns (Proposal memory) {
         return proposalsArray[_id];
     }
@@ -69,12 +70,10 @@ contract Voting is Ownable {
 
     // ::::::::::::: REGISTRATION ::::::::::::: // 
 
-    /** @notice Register an address to the voter's whitelist
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be RegisteringVoters
-     *  An address can be registered only one time
-     *  @param  _addr address to add to the whitelist
-     */
+    /// @notice Register an address to the voter's whitelist
+    /// @dev Only contract's owner can use the function. Workflow status needs to be RegisteringVoters. An address can be registered only one time
+    /// @param  _addr voter address to add to the whitelist
+
     function addVoter(address _addr) external onlyOwner {
         require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Voters registration is not open yet');
         require(voters[_addr].isRegistered != true, 'Already registered');
@@ -84,13 +83,12 @@ contract Voting is Ownable {
     }
 
 
-    // ::::::::::::: PROPOSAL ::::::::::::: // 
-    /** @notice Register a proposal for the vote session
-     *  @dev Only voters can use the function
-     *  Workflow status needs to be ProposalsRegistrationStarted
-     *  A proposal can not be empty
-     *  @param  _desc proposal's description
-     */
+    // ::::::::::::: PROPOSAL ::::::::::::: //
+
+    /// @notice Register a proposal for the vote session
+    /// @dev Only voters can use the function. Workflow status needs to be ProposalsRegistrationStarted. A proposal can not be empty
+    /// @param  _desc proposal's description
+    
     function addProposal(string calldata _desc) external onlyVoters {
         require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, 'Proposals are not allowed yet');
         require(keccak256(abi.encode(_desc)) != keccak256(abi.encode("")), 'Vous ne pouvez pas ne rien proposer'); // facultatif
@@ -103,13 +101,12 @@ contract Voting is Ownable {
     }
 
     // ::::::::::::: VOTE ::::::::::::: //
-    /** @notice Register a vot
-     *  @dev Only voters can use the function
-     *  Workflow status needs to be VotingSessionStarted
-     *  A voter can vote only one time
-     *  Calculate the current winningProposalID. Note that in case of equality we keep the first vote.
-     *  @param  _id vote proposal's ID
-     */
+
+    /// @notice Register a vot for a proposal
+    /// @dev Only voters can use the function. Workflow status needs to be VotingSessionStarted. A voter can vote only one time
+    /// @dev Calculate the current winningProposalID. Note that in case of equality we keep the first vote.
+    /// @param  _id vote proposal's ID
+
     function setVote( uint _id) external onlyVoters {
         require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session havent started yet');
         require(voters[msg.sender].hasVoted != true, 'You have already voted');
@@ -121,21 +118,18 @@ contract Voting is Ownable {
 
         emit Voted(msg.sender, _id);
 
-        //Add vote to previous to avoir DOS possibilities in tallyVotes
-        if (_id != winningProposalID) {
-            if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount){
-                winningProposalID=_id;
-            }
+        //Calculate the winningProposalID to protect the contract from an attack
+        if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount){
+            winningProposalID=_id;
         }
     }
 
+
     // ::::::::::::: STATE ::::::::::::: //
 
-    /** @notice Change workflow status to ProposalsRegistrationStarted
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be RegisteringVoters
-     *  A default proposal with ID 0 is created with description 'GENESIS'
-     */
+    /// @notice Change workflow status to ProposalsRegistrationStarted
+    /// @dev Only contract's owner can use the function. Workflow status needs to be RegisteringVoters. A default proposal with ID 0 is created with description 'GENESIS'
+
     function startProposalsRegistering() external onlyOwner {
         require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Registering proposals cant be started now');
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
@@ -147,52 +141,45 @@ contract Voting is Ownable {
         emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
     }
 
-    /** @notice Change workflow status to ProposalsRegistrationEnded
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be ProposalsRegistrationStarted
-     */
+    /// @notice Change workflow status to ProposalsRegistrationEnded
+    /// @dev Only contract's owner can use the function. Workflow status needs to be ProposalsRegistrationStarted
     function endProposalsRegistering() external onlyOwner {
         require(workflowStatus == WorkflowStatus.ProposalsRegistrationStarted, 'Registering proposals havent started yet');
         workflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationStarted, WorkflowStatus.ProposalsRegistrationEnded);
     }
 
-    /** @notice Change workflow status to VotingSessionStarted
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be ProposalsRegistrationEnded
-     */
+    /// @notice Change workflow status to VotingSessionStarted
+    /// @dev Only contract's owner can use the function. Workflow status needs to be ProposalsRegistrationEnded
+
     function startVotingSession() external onlyOwner {
         require(workflowStatus == WorkflowStatus.ProposalsRegistrationEnded, 'Registering proposals phase is not finished');
         workflowStatus = WorkflowStatus.VotingSessionStarted;
         emit WorkflowStatusChange(WorkflowStatus.ProposalsRegistrationEnded, WorkflowStatus.VotingSessionStarted);
     }
 
-    /** @notice Change workflow status to VotingSessionEnded
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be VotingSessionStarted
-     */
+    /// @notice Change workflow status to VotingSessionEnded
+    /// @dev Only contract's owner can use the function. Workflow status needs to be VotingSessionStarted
+
     function endVotingSession() external onlyOwner {
         require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session havent started yet');
         workflowStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(WorkflowStatus.VotingSessionStarted, WorkflowStatus.VotingSessionEnded);
     }
 
-    /** @notice Change workflow status to VotesTallied
-     *  @dev Only contract's owner can use the function
-     *  Workflow status needs to be VotingSessionEnded
-     */
-    function tallyVotes() external onlyOwner {
-        require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
-        /* vote count is now done in setVote function
-        uint _winningProposalId;
-        for (uint256 p = 0; p < proposalsArray.length; p++) {
-            if (proposalsArray[p].voteCount > proposalsArray[_winningProposalId].voteCount) {
-               _winningProposalId = p;
-            }
-        }
-        winningProposalID = _winningProposalId;*/
+    //Security to protect the contract to the Dos attack
+    //function tallyVotes() external onlyOwner {
+    //  require(workflowStatus == WorkflowStatus.VotingSessionEnded, "Current status is not voting session ended");
+    //vote count is now done in setVote function
+    //  uint _winningProposalId;
+    //  for (uint256 p = 0; p < proposalsArray.length; p++) {
+    //      if (proposalsArray[p].voteCount > proposalsArray[_winningProposalId].voteCount) {
+    //        _winningProposalId = p;
+    //      }
+    //  }
+    //  winningProposalID = _winningProposalId;*/
 
-        workflowStatus = WorkflowStatus.VotesTallied;
-        emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
-    }
+    //  workflowStatus = WorkflowStatus.VotesTallied;
+    //  emit WorkflowStatusChange(WorkflowStatus.VotingSessionEnded, WorkflowStatus.VotesTallied);
+  //  }
 }
