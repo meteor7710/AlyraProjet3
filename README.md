@@ -44,7 +44,7 @@ From there, follow the instructions on the hosted React app. It will walk you th
 
 ## Installation
 go to ./
-truffle unbox react
+ - truffle unbox react
 go to ./truffle
-npm install --prefix . @openzeppelin/contracts
-npm install --prefix .  dotenv
+ - npm install --prefix . @openzeppelin/contracts
+ - npm install --prefix .  dotenv
