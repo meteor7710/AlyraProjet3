@@ -7,7 +7,7 @@ function Whitelist() {
   const [addressToWhitelistLog, setAddressToWhitelistLog]= useState("");
   const [registeredAddresses, setRegisteredAddresses] = useState();
 
-  //show adress already whitelisted
+  //show address already whitelisted
   useEffect(() => {
     (async function () {
       const voterRegisteredEvents= await contract.getPastEvents('VoterRegistered', {fromBlock: 0,toBlock: 'latest'});
@@ -18,7 +18,7 @@ function Whitelist() {
       });
 
       //Build a list of <li>address</li>
-      const listAdresses = voterAddresses.map((address) => <li>{address}</li>);
+      const listAdresses = voterAddresses.map((address,index) => <li key={"add"+index}>{address}</li>);
       setRegisteredAddresses(listAdresses);
  
     })();
@@ -37,7 +37,6 @@ function Whitelist() {
       const addAddressTx = await contract.methods.addVoter(addressToWhitelist).send({ from: accounts[0] });
       
       const addedAddressToWhitelist = addAddressTx.events.VoterRegistered.returnValues.voterAddress;
-      console.log ("Adress added to Whitelist : " + addedAddressToWhitelist);
       setAddressToWhitelistLog ("Address added to the Whitelist : " + addedAddressToWhitelist);
     }
   };
