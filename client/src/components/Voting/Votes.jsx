@@ -31,7 +31,7 @@ function Votes() {
             )}
           </tbody>
         </table>
-        <button onSubmit={() => handleClick(proposal.id)}>add your Vote</button>}           
+        <button onSubmit={() => handleClick(proposal.id)}>add your Vote</button>          
       </div>
     </div> 
   );
