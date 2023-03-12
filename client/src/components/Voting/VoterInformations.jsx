@@ -57,7 +57,7 @@ function VoterInformations() {
     <div className="voterInformations">
       <h3>Voter Informations</h3>
       <div>
-        <span>Get voter informations : </span>
+        <label htmlFor="voterInformation">Get voter informations : </label>
         <input type="text" id="voterInformation" name="voterInformation" placeholder="Add voter address" onChange={handleAdressToQueryChange} value={voterAddressToQuery}  autoComplete="off"/>
         <button onClick={getVoterInformation}>Get informations</button>
         <button onClick={resetVoterHistory}>Clean informations</button>

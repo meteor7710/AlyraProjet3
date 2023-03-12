@@ -57,7 +57,7 @@ function ProposalInformations() {
     <div className="proposalInformations">
       <h3>Proposal Informations</h3>
       <div>
-        <span>Get proposal informations : </span>
+        <label htmlFor="proposalInformation">Get proposal informations : </label>
         <input type="text" id="proposalInformation" name="proposalInformation" placeholder="Add proposal ID" onChange={handleIDChange} value={proposalIDToQuery} autoComplete="off"/>
         <button onClick={getProposalInformation}>Get informations</button>
         <button onClick={resetProposalHistory}>Reset informations</button>
