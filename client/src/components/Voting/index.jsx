@@ -1,7 +1,6 @@
 import useEth from "../../contexts/EthContext/useEth";
 import Title from "./Title";
-import Whitelist from "./Whitelist";
-import States from "./States";
+import Owner from "./Owner";
 import Proposals from "./Proposals";
 import Votes from "./Votes";
 import Result from "./Result";
@@ -16,10 +15,7 @@ function Voting() {
   const voting =
     <>
       <div className="contract-container">
-        <Whitelist />
-        <hr/>
-        <States />
-        <hr/>
+        <Owner />
         <Proposals />
         <hr/>
         <Votes />
