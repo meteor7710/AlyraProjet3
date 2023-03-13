@@ -13,19 +13,17 @@ function EthProvider({ children }) {
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
         const { abi } = artifact;
-        let address, contract,owner, isVoter;
+        let address, contract,owner;
         try {
           address = artifact.networks[networkID].address;
           contract = new web3.eth.Contract(abi, address);
           owner = await contract.methods.owner().call();
-          const voter =  await contract.methods.getVoter(accounts[0]).call({from: accounts[0]});
-          isVoter = voter.isRegistered;
         } catch (err) {
           console.error(err);
         }
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract, owner, isVoter }
+          data: { artifact, web3, accounts, networkID, contract, owner }
         });
       }
     }, []);
@@ -58,7 +56,7 @@ function EthProvider({ children }) {
   return (
     <EthContext.Provider value={{
       state,
-      dispatch
+      dispatch      
     }}>
       {children}
     </EthContext.Provider>

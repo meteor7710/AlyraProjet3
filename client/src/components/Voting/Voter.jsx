@@ -3,11 +3,12 @@ import Votes from "./Votes";
 import ProposalInformations from "./ProposalInformations"
 import VoterInformations from "./VoterInformations"
 import useEth from "../../contexts/EthContext/useEth";
+import { useState, useEffect } from "react";
 
 function Voter() {
-    const { state: { isVoter } } = useEth();
+    const { state: {  contract, accounts } } = useEth();
 
-    const ownerTools =
+    const voterTools =
         <>
             <Proposals />
             <hr />
@@ -19,10 +20,25 @@ function Voter() {
             <hr />
         </>;
 
+const [addressIsVoter, setAddressIsVoter] = useState(false);
+
+//show address already whitelisted
+useEffect(() => {
+    (async function () {
+        const voters = await contract.getPastEvents("VoterRegistered", { fromBlock: 0, toBlock: "latest" });
+        const findVoter =  voters.find((address) => address.returnValues.voterAddress === accounts[0]);
+
+        if (findVoter) {setAddressIsVoter(true);}
+      
+ 
+    })();
+  }, [contract,accounts])
+
+
     return (
         <div className="Voter">
             {
-                (isVoter) ? ownerTools :
+                (addressIsVoter) ? voterTools :
                     <span></span>
             }
         </div>
