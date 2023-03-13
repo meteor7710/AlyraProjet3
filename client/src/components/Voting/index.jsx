@@ -1,11 +1,9 @@
 import useEth from "../../contexts/EthContext/useEth";
 import Title from "./Title";
 import Owner from "./Owner";
-import Proposals from "./Proposals";
-import Votes from "./Votes";
+import Voter from "./Voter";
 import Result from "./Result";
-import VoterInformations from "./VoterInformations"
-import ProposalInformations from "./ProposalInformations"
+
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
 
@@ -16,15 +14,8 @@ function Voting() {
     <>
       <div className="contract-container">
         <Owner />
-        <Proposals />
-        <hr/>
-        <Votes />
-        <hr/>
+        <Voter />        
         <Result />
-        <hr/>
-        <VoterInformations />
-        <hr/>
-        <ProposalInformations />
       </div>
     </>;
 
