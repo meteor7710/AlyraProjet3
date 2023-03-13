@@ -106,7 +106,7 @@ function States() {
     <div className="states">
       <h3>States</h3>
       <div>
-      <span>Current workflow status : </span><span>{currentWorkflowStatus}</span>
+        <span>Current workflow status : </span><span>{currentWorkflowStatus}</span>
       </div>
       <div>
         <p>Change workflow status actions :</p>

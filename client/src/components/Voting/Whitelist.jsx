@@ -45,7 +45,7 @@ function Whitelist() {
     <div className="whitelist">
       <h3>Whitelist</h3>
       <div>
-        <span>Add address to whitelist : </span>
+        <label htmlFor="addAddress">Add address to whitelist : </label>
         <input type="text" id="addAddress" name="addAddress" placeholder="Add address to whitelist" onChange={handleAdressChange} value={addressToWhitelist} autoComplete="off"/>
         <button onClick={addAddressToWhitelist}>Add address</button>
       </div>
