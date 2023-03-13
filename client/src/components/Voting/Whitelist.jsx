@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
 function Whitelist() {
-  const { state: { contract, accounts, web3 } } = useEth();
+  const { state: { contract, accounts, web3, creationBlock } } = useEth();
   const [addressToWhitelist, setAddressToWhitelist]= useState("");
   const [addressToWhitelistLog, setAddressToWhitelistLog]= useState("");
   const [registeredAddresses, setRegisteredAddresses] = useState();
@@ -10,7 +10,7 @@ function Whitelist() {
   //show address already whitelisted
   useEffect(() => {
     (async function () {
-      const voterRegisteredEvents= await contract.getPastEvents('VoterRegistered', {fromBlock: 0,toBlock: 'latest'});
+      const voterRegisteredEvents= await contract.getPastEvents('VoterRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
       const voterAddresses=[];
 
       voterRegisteredEvents.forEach(event => {
@@ -22,7 +22,7 @@ function Whitelist() {
       setRegisteredAddresses(listAdresses);
  
     })();
-  }, [contract,addressToWhitelistLog])
+  }, [contract,creationBlock,addressToWhitelistLog])
 
   //Manage address input
   const handleAdressChange = e => {

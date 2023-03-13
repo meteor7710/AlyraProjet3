@@ -13,17 +13,21 @@ function EthProvider({ children }) {
         const accounts = await web3.eth.requestAccounts();
         const networkID = await web3.eth.net.getId();
         const { abi } = artifact;
-        let address, contract,owner;
+        let address, contract,owner,creationBlock;
         try {
           address = artifact.networks[networkID].address;
           contract = new web3.eth.Contract(abi, address);
           owner = await contract.methods.owner().call();
+
+          const creationEvent = await contract.getPastEvents('OwnershipTransferred', {filter:{previousOwner:"0x0000000000000000000000000000000000000000"},fromBlock: 0,toBlock: 'latest'});
+          creationBlock = creationEvent[0].blockNumber;
+
         } catch (err) {
           console.error(err);
         }
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract, owner }
+          data: { artifact, web3, accounts, networkID, contract, owner, creationBlock }
         });
       }
     }, []);

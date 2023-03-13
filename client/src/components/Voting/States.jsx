@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
 function States() {
-  const { state: { contract, accounts } } = useEth();
+  const { state: { contract, accounts, creationBlock } } = useEth();
   const [currentWorkflowStatus, setCurrentWorkflowStatus] = useState();
   const [workflowStatusLog, setWorkflowStatusLog] = useState();
   const [workflowEvents, setWorkflowEvents] = useState();
@@ -20,7 +20,7 @@ function States() {
   //show status event history
   useEffect(() => {
     (async function () {
-      const workflowStatusEvents= await contract.getPastEvents('WorkflowStatusChange', {fromBlock: 0,toBlock: 'latest'});
+      const workflowStatusEvents= await contract.getPastEvents('WorkflowStatusChange', {fromBlock: creationBlock,toBlock: 'latest'});
       const workflowChanges=[];
 
       workflowStatusEvents.forEach(event => {
@@ -33,7 +33,7 @@ function States() {
       setWorkflowEvents(listEvents);
  
     })();
-  }, [contract,workflowStatusLog])
+  }, [contract,creationBlock,workflowStatusLog])
 
 
 
