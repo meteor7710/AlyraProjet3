@@ -17,8 +17,9 @@ function EthProvider({ children }) {
         try {
           address = artifact.networks[networkID].address;
           contract = new web3.eth.Contract(abi, address);
+          //Add owner state to filter views
           owner = await contract.methods.owner().call();
-
+          //Add contract creation block to reduce event queries
           const creationEvent = await contract.getPastEvents('OwnershipTransferred', {filter:{previousOwner:"0x0000000000000000000000000000000000000000"},fromBlock: 0,toBlock: 'latest'});
           creationBlock = creationEvent[0].blockNumber;
 
