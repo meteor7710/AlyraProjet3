@@ -6,15 +6,39 @@ function Votes() {
   const [proposals, setVote] = useState([]);
 
   useEffect(() => {
+    async function getProposals() {
+      if (contract) {
+        const eventProposals = await contract.getPastEvents("ProposalRegistered", { fromBlock: 0, toBlock: "latest" });
+        const proposalsId = eventProposals.map((proposal) => proposal.returnValues._proposalId);
 
-    (async () => {
-      setVote(await getVote());
-    })();
+        let proposalsDatas = [];
+
+        for (const id of proposalsId) {
+          const proposal = await contract.methods.getOneProposal(parseInt(id)).call({ from: accounts[0] });
+          proposalsDatas.push(
+            {
+              key: id,
+              text: proposal.description,
+              value: id
+            }
+          );
+        }
+        setVote(proposalsDatas);
+      }
+    };
+    getProposals();
   }, [accounts, contract, artifact]);
 
+
+
   const handleClick = async (proposalId) => {
-    await proposals(proposalId);
+  await proposals(proposalId);
   }
+
+  //const handleVote = async () => {
+  //  await contract.methods.setVote(parseInt(selectedProposal)).send({ from: accounts[0] });
+  //  window.location.reload();
+  //}
 
   return (
     <div className="votes">
