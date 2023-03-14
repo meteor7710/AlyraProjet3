@@ -3,18 +3,19 @@ import Title from "./Title";
 import Owner from "./Owner";
 import Voter from "./Voter";
 import Result from "./Result";
-
+import { useState } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
 
 function Voting() {
   const { state } = useEth();
+  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState();
 
   const voting =
     <>
       <div className="contract-container">
-        <Owner />
-        <Voter />        
+        <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog}/>
+        <Voter addressToWhitelistLog={addressToWhitelistLog}/>        
         <Result />
       </div>
     </>;
