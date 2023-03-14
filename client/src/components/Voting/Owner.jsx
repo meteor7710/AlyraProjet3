@@ -2,14 +2,14 @@ import Whitelist from "./Whitelist";
 import States from "./States";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Owner({addressToWhitelistLog,setAddressToWhitelistLog,workflowStatusLog, setWorkflowStatusLog,currentWorkflowStatus}) {
+function Owner({addressToWhitelistLog,setAddressToWhitelistLog,workflowStatusLog, setWorkflowStatusLog,currentWorkflowStatus,setCurrentWorkflowStatus}) {
     const { state: { accounts, owner } } = useEth();
 
     const ownerTools =
         <>
-            <Whitelist addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} currentWorkflowStatus={currentWorkflowStatus} />
+            <Whitelist addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog}/>
             <hr />
-            <States workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus}/>
+            <States workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
             <hr />
         </>;
 

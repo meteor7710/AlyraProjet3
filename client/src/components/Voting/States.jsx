@@ -1,14 +1,23 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus}) {
+function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,setCurrentWorkflowStatus}) {
   const { state: { contract, accounts, creationBlock } } = useEth();
   const [workflowEvents, setWorkflowEvents] = useState();
+
+  //Show current status
+  useEffect(() => {
+    (async function () {
+      const workflowStatus= await contract.methods.workflowStatus().call();
+      setCurrentWorkflowStatus(workflowStatus);
+    })();
+  }, [contract,accounts,workflowStatusLog])
  
   //show status event history
   useEffect(() => {
     (async function () {
       const workflowStatusEvents= await contract.getPastEvents('WorkflowStatusChange', {fromBlock: creationBlock,toBlock: 'latest'});
+      
       const workflowChanges=[];
 
       workflowStatusEvents.forEach(event => {
