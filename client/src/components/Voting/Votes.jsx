@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useEth } from "../../contexts/EthContext";
+//import { useState, useEffect } from "react";
+//import { useEth } from "../../contexts/EthContext";
 
 function Votes() {
-  const { state: { accounts, contract, artifact }} = useEth();
+  /*const { state: { accounts, contract, artifact }} = useEth();
   const [proposals, setVote] = useState([]);
 
   useEffect(() => {
@@ -29,8 +29,6 @@ function Votes() {
     getProposals();
   }, [accounts, contract, artifact]);
 
-
-
   const handleClick = async (proposalId) => {
   await proposals(proposalId);
   }
@@ -55,10 +53,10 @@ function Votes() {
             )}
           </tbody>
         </table>
-        <button onSubmit={() => handleClick(proposal.id)}>add your Vote</button>          
+        <button onSubmit={() => handleClick("0")}>add your Vote</button>          
       </div>
     </div> 
-  );
+  );*/
 }
 
 export default Votes;
