@@ -11,7 +11,7 @@ function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,
       const workflowStatus= await contract.methods.workflowStatus().call();
       setCurrentWorkflowStatus(workflowStatus);
     })();
-  }, [contract,accounts,workflowStatusLog])
+  }, [contract,accounts,setCurrentWorkflowStatus,workflowStatusLog])
  
   //show status event history
   useEffect(() => {
