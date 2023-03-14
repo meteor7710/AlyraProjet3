@@ -88,10 +88,9 @@ function Proposals(proposals) {
                   onChange={handleChange}
                   placeholder="Add Proposal"
                   size="huge"
-                  fluid
                 />
             </datalist>
-            <button color="blue" type="submit" size="huge" fluid>
+            <button color="blue" type="submit" size="huge">
               Add
             </button>
           </form>
