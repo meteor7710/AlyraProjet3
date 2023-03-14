@@ -34,7 +34,7 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
     if (await contract.methods.addVoter(addressToWhitelist).call({ from: accounts[0] })){
       const addAddressTx = await contract.methods.addVoter(addressToWhitelist).send({ from: accounts[0] });
       const addedAddressToWhitelist = addAddressTx.events.VoterRegistered.returnValues.voterAddress;
-      setAddressToWhitelistLog ("Address added to the Whitelist : " + addedAddressToWhitelist);
+      setAddressToWhitelistLog ("Address "+ addedAddressToWhitelist + " added to the Whitelist");
     }
   };
 
@@ -47,7 +47,7 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
         <button onClick={addAddressToWhitelist}>Add address</button>
       </div>
       <div>
-        <span>Logs :</span><span>{addressToWhitelistLog}</span>
+        <span>Logs : </span><span>{addressToWhitelistLog}</span>
       </div>
       <div>
         <span>Address already whitelisted :</span>
