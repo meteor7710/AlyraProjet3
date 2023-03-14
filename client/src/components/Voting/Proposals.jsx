@@ -1,105 +1,90 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Proposals(proposals) {
-  const { state: { contract, accounts, artifact } } = useEth();
-  const [proposalsData, setProposalsData] = useState([]);
-  const [inputValue, setInput]= useState("");
+function Proposals() {
+  const { state: { contract, accounts, creationBlock } } = useEth();
+  const [proposalToAdd, setProposalToAdd] = useState();
+  const [addProposalLog, setAddProposalLog]= useState();
+  const [proposalsInformations, setProposalsInformations] = useState([]);
 
-  useEffect(() => {
-    async function getProposals() {
-      if (contract) {
-        //Récupération des propositions à partir de l'event
-        const proposalEvent = await contract.getPastEvents("ProposalRegistered", { fromBlock: 0, toBlock: "latest" });
-        // Création d'un tableau pour les référencer
-        const proposalsId = proposalEvent.map((proposal) => proposal.returnValues._proposalId);
-        let proposalsDatas = [];
-
-        // Boucle d'enregistrement de propositions
-        for (const id of proposalsId) {
-          // Récupération des données de la proposition
-          const proposal = await contract.methods.getOneProposal(parseInt(id)).call({ from: accounts[0] });
-          // Remplissage le tableau
-          proposalsDatas.push(
-            {
-              id: id,
-              desccription: proposal.description,
-              voteCount: proposal.voteCount
-            }
-          );
-        }
-         // Mémorisation dans le state
-        setProposalsData(proposalsDatas);
-      }
-    };
-  
-    getProposals();
-  }, [accounts, contract, artifact]);
-
-  const handleChange = (event) => {
-    setInput(event.currentTarget.value);
+  //Manage Proposal input
+  const handleProposalChange = e => {
+    setProposalToAdd(e.target.value);
   };
 
-  const handleAddProposal = async () => {
-    if (inputValue === "") {
-      alert("Please, enter a description");
-      return;
+  //Add Proposal
+  const addProposal = async () => {
+    if (proposalToAdd === "") {alert("Proposal description must be not null"); }
+
+    if (await contract.methods.addProposal(proposalToAdd).call({ from: accounts[0] })){
+      const addProposalTx = await contract.methods.addProposal(proposalToAdd).send({ from: accounts[0] });
+
+      const addedProposalId = addProposalTx.events.ProposalRegistered.returnValues.proposalId;
+      setAddProposalLog ("Proposal "+ addedProposalId+ " registered");
     }
-    const receipt = await contract.methods.addProposal(inputValue).send({ from: accounts[0] });
-    window.location.reload();
   };
+
+  //show proposal already registered
+  useEffect(() => {
+    (async function () {
+
+      //Get proposal information from a proposal ID
+      async function getProposalInformations(proposalId){
+        let proposal =[];
+        proposal = await contract.methods.getOneProposal(parseInt(proposalId)).call({ from: accounts[0] });
+        return proposal;
+      };
+
+      const proposalRegisteredEvents= await contract.getPastEvents('ProposalRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
+      const proposalsList=[];
+
+      for (let i=0; i < proposalRegisteredEvents.length ; i++)
+      {
+        let proposal = [];
+        proposal = await getProposalInformations(i+1);
+
+        proposalsList.push(
+          {
+            id: proposalRegisteredEvents[i].returnValues.proposalId,
+            description: proposal.description,
+          });
+      };
+
+      const listProposal = proposalsList.map((prop,index) => 
+        <tr key={"proposal"+index}>
+          <td>{prop.id}</td>
+          <td>{prop.description}</td>
+        </tr>
+      );
+      setProposalsInformations(listProposal);
+    })();
+  }, [contract,accounts,creationBlock,addProposalLog])
   
 
   return (
-    <section>
-      <div className="proposals">
-      <h3>Proposals</h3>
-      
-
+      <section className="proposals">
+        <h3>Proposals</h3>
         <div>
-          <h4>Proposals List</h4>
+          <label htmlFor="AddProposal">Add address to whitelist : </label>
+          <textarea name="AddProposal" cols="40" rows="5"  placeholder="Add proposal description" onChange={handleProposalChange} value={proposalToAdd} autoComplete="off"></textarea>
+          <button onClick={addProposal}>Add Proposal </button>
+        </div>
+        <div>
+          <span>Logs : </span><span>{addProposalLog}</span>
+        </div>
+        <div>
+          <span>Proposals already whitelisted :</span>
           <table>
-            <thead>
-             <tr>
-                <th>Description</th>
-                <th>Vote count</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {proposalsData.map((proposal) => {
-               return (
-                  <tr key={proposal.id}>
-                    <td>{proposal.desc}</td>
-                    <td>{proposal.voteCount}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
+              <thead>
+                <tr>
+                  <th>Proposal ID</th>
+                  <th>Proposal Description</th>
+                </tr>
+              </thead>
+            <tbody>{proposalsInformations}</tbody>
           </table>
-        
-      
         </div>
-        <div>
-          <form onSubmit={handleAddProposal}>
-            <datalist>
-                <input
-                  value={inputValue}
-                  onChange={handleChange}
-                  placeholder="Add Proposal"
-                  size="huge"
-                />
-            </datalist>
-            <button color="blue" type="submit" size="huge">
-              Add
-            </button>
-          </form>
-        </div>
-    
-      </div>
-    </section>
-    
-    
+      </section>
   );
 }
 

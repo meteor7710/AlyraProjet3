@@ -22,8 +22,6 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
     })();
   }, [contract,accounts,creationBlock,addressToWhitelistLog])
 
-  contract.events.VoterRegistered({fromBlock : creationBlock}).on('data', event => console.log(event))
-
   //Manage address input
   const handleAdressChange = e => {
     setAddressToWhitelist(e.target.value);
@@ -36,12 +34,12 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
     if (await contract.methods.addVoter(addressToWhitelist).call({ from: accounts[0] })){
       const addAddressTx = await contract.methods.addVoter(addressToWhitelist).send({ from: accounts[0] });
       const addedAddressToWhitelist = addAddressTx.events.VoterRegistered.returnValues.voterAddress;
-      setAddressToWhitelistLog ("Address added to the Whitelist : " + addedAddressToWhitelist);
+      setAddressToWhitelistLog ("Address "+ addedAddressToWhitelist + " added to the Whitelist");
     }
   };
 
   return (
-    <div className="whitelist">
+    <section className="whitelist">
       <h3>Whitelist</h3>
       <div>
         <label htmlFor="addAddress">Add address to whitelist : </label>
@@ -49,13 +47,13 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
         <button onClick={addAddressToWhitelist}>Add address</button>
       </div>
       <div>
-        <span>Logs :</span><span>{addressToWhitelistLog}</span>
+        <span>Logs : </span><span>{addressToWhitelistLog}</span>
       </div>
       <div>
         <span>Address already whitelisted :</span>
         <ul>{registeredAddresses}</ul>
       </div>
-    </div>
+    </section>
   );
 }
 

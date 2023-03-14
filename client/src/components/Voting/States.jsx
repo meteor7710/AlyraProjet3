@@ -94,7 +94,7 @@ function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,
   };
 
   return (
-    <div className="states">
+    <section className="states">
       <h3>States</h3>
       <div>
         <span>Current workflow status : </span><span>{currentWorkflowStatus}</span>
@@ -117,7 +117,7 @@ function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,
         <span>Workflows status history :</span>
         <ul>{workflowEvents}</ul>
       </div>
-    </div>
+    </section>
   );
 }
 
