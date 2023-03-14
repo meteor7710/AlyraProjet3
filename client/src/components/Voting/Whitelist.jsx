@@ -20,7 +20,7 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
       const listAdresses = voterAddresses.map((address,index) => <li key={"add"+index}>{address}</li>);
       setRegisteredAddresses(listAdresses);
     })();
-  }, [contract,accounts,addressToWhitelistLog])
+  }, [contract,accounts,creationBlock,addressToWhitelistLog])
 
   contract.events.VoterRegistered({fromBlock : creationBlock}).on('data', event => console.log(event))
 
