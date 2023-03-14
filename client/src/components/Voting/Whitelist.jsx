@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Whitelist() {
+function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
   const { state: { contract, accounts, web3, creationBlock } } = useEth();
   const [addressToWhitelist, setAddressToWhitelist]= useState("");
-  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState("");
   const [registeredAddresses, setRegisteredAddresses] = useState();
 
   //show address already whitelisted
@@ -20,11 +19,10 @@ function Whitelist() {
       //Build a list of <li>address</li>
       const listAdresses = voterAddresses.map((address,index) => <li key={"add"+index}>{address}</li>);
       setRegisteredAddresses(listAdresses);
- 
     })();
-  }, [contract,creationBlock,addressToWhitelistLog])
+  }, [contract,accounts,creationBlock,addressToWhitelistLog])
 
-  contract.events.VoterRegistered({fromBlock: creationBlock}) .on('data', event => console.log(event))
+  contract.events.VoterRegistered({fromBlock : creationBlock}).on('data', event => console.log(event))
 
   //Manage address input
   const handleAdressChange = e => {
@@ -37,11 +35,8 @@ function Whitelist() {
 
     if (await contract.methods.addVoter(addressToWhitelist).call({ from: accounts[0] })){
       const addAddressTx = await contract.methods.addVoter(addressToWhitelist).send({ from: accounts[0] });
-      
       const addedAddressToWhitelist = addAddressTx.events.VoterRegistered.returnValues.voterAddress;
       setAddressToWhitelistLog ("Address added to the Whitelist : " + addedAddressToWhitelist);
-
-      window.location.reload();
     }
   };
 
@@ -56,7 +51,6 @@ function Whitelist() {
       <div>
         <span>Logs :</span><span>{addressToWhitelistLog}</span>
       </div>
-
       <div>
         <span>Address already whitelisted :</span>
         <ul>{registeredAddresses}</ul>

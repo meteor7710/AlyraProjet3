@@ -3,19 +3,22 @@ import Title from "./Title";
 import Owner from "./Owner";
 import Voter from "./Voter";
 import Result from "./Result";
-
+import { useState } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
 
 function Voting() {
   const { state } = useEth();
+  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState();
+  const [workflowStatusLog, setWorkflowStatusLog] = useState();
+  const [currentWorkflowStatus, setCurrentWorkflowStatus] = useState();
 
   const voting =
     <>
       <div className="contract-container">
-        <Owner />
-        <Voter />        
-        <Result />
+        <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
+        <Voter addressToWhitelistLog={addressToWhitelistLog}/>        
+        <Result currentWorkflowStatus={currentWorkflowStatus}/>
       </div>
     </>;
 

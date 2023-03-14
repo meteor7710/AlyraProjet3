@@ -5,7 +5,7 @@ import VoterInformations from "./VoterInformations"
 import useEth from "../../contexts/EthContext/useEth";
 import { useState, useEffect } from "react";
 
-function Voter() {
+function Voter({addressToWhitelistLog}) {
     const { state: {  contract, accounts } } = useEth();
 
     const voterTools =
@@ -30,10 +30,8 @@ useEffect(() => {
 
         if (findVoter) {setAddressIsVoter(true);}
       
- 
     })();
-  }, [contract,accounts])
-
+  }, [contract,accounts,addressToWhitelistLog])
 
     return (
         <div className="Voter">

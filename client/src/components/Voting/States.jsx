@@ -1,26 +1,23 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function States() {
+function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,setCurrentWorkflowStatus}) {
   const { state: { contract, accounts, creationBlock } } = useEth();
-  const [currentWorkflowStatus, setCurrentWorkflowStatus] = useState();
-  const [workflowStatusLog, setWorkflowStatusLog] = useState();
   const [workflowEvents, setWorkflowEvents] = useState();
- 
+
   //Show current status
   useEffect(() => {
     (async function () {
       const workflowStatus= await contract.methods.workflowStatus().call();
       setCurrentWorkflowStatus(workflowStatus);
-
     })();
-  }, [contract,workflowStatusLog])
-
-
+  }, [contract,accounts,setCurrentWorkflowStatus,workflowStatusLog])
+ 
   //show status event history
   useEffect(() => {
     (async function () {
       const workflowStatusEvents= await contract.getPastEvents('WorkflowStatusChange', {fromBlock: creationBlock,toBlock: 'latest'});
+      
       const workflowChanges=[];
 
       workflowStatusEvents.forEach(event => {
@@ -34,10 +31,6 @@ function States() {
  
     })();
   }, [contract,creationBlock,workflowStatusLog])
-
-
-
-
 
   //Change workflowstatus to ProposalsRegistrationStarted
   const startProposals = async () => { 
@@ -99,8 +92,6 @@ function States() {
       setWorkflowStatusLog ("Change status from " + workflowPreviousStatus + " to " + workflowNewStatus);
     }
   };
-
-
 
   return (
     <div className="states">
