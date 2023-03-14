@@ -22,8 +22,6 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
     })();
   }, [contract,accounts,creationBlock,addressToWhitelistLog])
 
-  contract.events.VoterRegistered({fromBlock : creationBlock}).on('data', event => console.log(event))
-
   //Manage address input
   const handleAdressChange = e => {
     setAddressToWhitelist(e.target.value);
