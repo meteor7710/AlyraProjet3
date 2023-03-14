@@ -14,7 +14,7 @@ function States() {
       setCurrentWorkflowStatus(workflowStatus);
 
     })();
-  }, [contract,workflowStatusLog])
+  }, [contract,accounts,workflowStatusLog])
 
 
   //show status event history
