@@ -7,7 +7,7 @@ function Result({currentWorkflowStatus}) {
 
   useEffect(() => {
     async function getResult() {
-      if (currentWorkflowStatus == 5) {
+      if (currentWorkflowStatus === "5") {
         const winnerId = await contract.methods.winningProposalID().call({ from: accounts[0] });
         const winnerProposal = await contract.methods.getOneProposal(winnerId).call({ from: accounts[0] });
         const winnerDesc = winnerProposal.description;
@@ -28,7 +28,7 @@ function Result({currentWorkflowStatus}) {
             </tbody>
           </table>
         );
-        
+
         setResult(proposalRendered);
       }
     };
