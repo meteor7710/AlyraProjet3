@@ -54,7 +54,7 @@ function VoterInformations() {
   };
 
   return (
-    <div className="voterInformations">
+    <section className="voterInformations">
       <h3>Voter Informations</h3>
       <div>
         <label htmlFor="voterInformation">Get voter informations : </label>
@@ -75,7 +75,7 @@ function VoterInformations() {
             <tbody>{voterInformations}</tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }
 

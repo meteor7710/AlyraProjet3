@@ -54,7 +54,7 @@ function ProposalInformations() {
   };
 
   return (
-    <div className="proposalInformations">
+    <section className="proposalInformations">
       <h3>Proposal Informations</h3>
       <div>
         <label htmlFor="proposalInformation">Get proposal informations : </label>
@@ -74,7 +74,7 @@ function ProposalInformations() {
             <tbody>{proposalInformations}</tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 }
 

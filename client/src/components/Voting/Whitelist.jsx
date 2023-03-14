@@ -39,7 +39,7 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
   };
 
   return (
-    <div className="whitelist">
+    <section className="whitelist">
       <h3>Whitelist</h3>
       <div>
         <label htmlFor="addAddress">Add address to whitelist : </label>
@@ -53,7 +53,7 @@ function Whitelist({addressToWhitelistLog,setAddressToWhitelistLog}) {
         <span>Address already whitelisted :</span>
         <ul>{registeredAddresses}</ul>
       </div>
-    </div>
+    </section>
   );
 }
 

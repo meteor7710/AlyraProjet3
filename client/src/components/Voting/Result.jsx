@@ -36,13 +36,13 @@ function Result({currentWorkflowStatus}) {
   }, [accounts, contract,currentWorkflowStatus]);
 
   return (
-    <div className="result">
+    <section className="result">
       <h3>Result</h3>
       {
           (currentWorkflowStatus === "5") ? <div>{result}</div> :
           <span>Votes are not tallied</span>
       }
-    </div>
+    </section>
   );
 }
 
