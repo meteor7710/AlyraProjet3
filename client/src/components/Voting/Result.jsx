@@ -1,27 +1,47 @@
 import { useState, useEffect } from "react";
 import { useEth } from "../../contexts/EthContext";
 
-function Result() {
-  const { state: { accounts, contract, artifact }} = useEth();
-  const [result, setResult] = useState([]);
+function Result({currentWorkflowStatus}) {
+  const { state: { accounts, contract }} = useEth();
+  const [result, setResult] = useState();
 
   useEffect(() => {
     async function getResult() {
-      if (contract) {
+      if (currentWorkflowStatus == 5) {
         const winnerId = await contract.methods.winningProposalID().call({ from: accounts[0] });
-        const winnerProposal = await contract.methods.getOneProposal(parseInt(winnerId)).call({ from: accounts[0] });
-        console.log(winnerProposal);
-        setResult(winnerProposal);
+        const winnerProposal = await contract.methods.getOneProposal(winnerId).call({ from: accounts[0] });
+        const winnerDesc = winnerProposal.description;
+
+        const proposalRendered = (
+          <table>
+            <thead>
+              <tr>
+                <th>Wining Proposal ID</th>
+                <th>Wining Proposal description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr key={"winner"}>
+                <td>{winnerId}</td>
+                <td>{winnerDesc}</td>
+              </tr>
+            </tbody>
+          </table>
+        );
+        
+        setResult(proposalRendered);
       }
     };
-
     getResult();
-  }, [accounts, contract, artifact]);
+  }, [accounts, contract,currentWorkflowStatus]);
 
   return (
     <div className="result">
       <h3>Result</h3>
-      <p>{result.winnerId} with {result.description}</p>
+      {
+          (currentWorkflowStatus === "5") ? <div>{result}</div> :
+          <span>Votes are not tallied</span>
+      }
     </div>
   );
 }
