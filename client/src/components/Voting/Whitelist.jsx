@@ -45,8 +45,8 @@ function Whitelist({addressToWhitelistLog}) {
           <table>
               <thead>
                 <tr>
-                  <th>Registration BlockNumber</th>
-                  <th>Address whitelisted</th>
+                  <th>Registration Block Number</th>
+                  <th>Address Whitelisted</th>
                 </tr>
               </thead>
             <tbody>{registeredAddresses}</tbody>
