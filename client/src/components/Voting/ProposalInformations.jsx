@@ -24,6 +24,8 @@ function ProposalInformations() {
 
   //Get proposal informations from an ID
   const getProposalInformation = async () => {
+
+    if (proposalIDToQuery === "") {alert("Proposal ID must be not null"); }
        
     const proposalReturns = await contract.methods.getOneProposal(proposalIDToQuery).call({ from: accounts[0] });
 
