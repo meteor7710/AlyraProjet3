@@ -11,9 +11,6 @@ function Whitelist({addressToWhitelistLog}) {
       const voterRegisteredEvents= await contract.getPastEvents('VoterRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
       const voterAddresses=[];
 
-      console.log ("voterRegisteredEvents");
-      console.log(voterRegisteredEvents);
-
       for (let i=0; i < voterRegisteredEvents.length ; i++)
       {
         voterAddresses.push(
