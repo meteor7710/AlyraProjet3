@@ -3,14 +3,24 @@ import Votes from "./Votes";
 import ProposalInformations from "./ProposalInformations"
 import VoterInformations from "./VoterInformations"
 import useEth from "../../contexts/EthContext/useEth";
+import ProposalRegistration from "./ProposalRegistration";
+import ProposalRegistrationClosed from "./ProposalRegistrationClosed";
+import ProposalRegistrationNotOpened from "./ProposalRegistrationNotOpened";
 import { useState, useEffect } from "react";
 
-function Voter({addressToWhitelistLog}) {
+function Voter({addressToWhitelistLog,currentWorkflowStatus}) {
     const { state: {  contract, accounts } } = useEth();
+    const [addProposalLog, setAddProposalLog]= useState();
 
     const voterTools =
         <>
-            <Proposals />
+            {
+                (currentWorkflowStatus === "0")  ? <ProposalRegistrationNotOpened /> :
+                (currentWorkflowStatus === "1")  ? <ProposalRegistration  addProposalLog={addProposalLog}  setAddProposalLog={setAddProposalLog}/> :
+                <ProposalRegistrationClosed />
+            }
+            <hr/>
+            <Proposals addProposalLog={addProposalLog}/>
             <hr />
             <Votes />
             <hr />
