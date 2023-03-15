@@ -1,4 +1,6 @@
 import Whitelist from "./Whitelist";
+import WhitelistRegistration from "./WhitelistRegistration";
+import WhitelistRegistrationClosed from "./WhiteistRegistrationClosed";
 import States from "./States";
 import useEth from "../../contexts/EthContext/useEth";
 
@@ -7,7 +9,11 @@ function Owner({addressToWhitelistLog,setAddressToWhitelistLog,workflowStatusLog
 
     const ownerTools =
         <>
-            <Whitelist addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog}/>
+            {
+                (currentWorkflowStatus === "0")  ? <WhitelistRegistration  addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog}/> :
+                <WhitelistRegistrationClosed />
+            }
+            <Whitelist addressToWhitelistLog={addressToWhitelistLog}/>
             <hr />
             <States workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
             <hr />
