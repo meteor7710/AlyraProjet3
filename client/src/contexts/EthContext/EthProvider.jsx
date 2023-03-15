@@ -20,8 +20,8 @@ function EthProvider({ children }) {
           //Add owner state to filter views
           owner = await contract.methods.owner().call();
           //Add contract creation block to reduce event queries
-          const creationEvent = await contract.getPastEvents('OwnershipTransferred', {filter:{previousOwner:"0x0000000000000000000000000000000000000000"},fromBlock: 0,toBlock: 'latest'});
-          creationBlock = creationEvent[0].blockNumber;
+          const deployTx = await web3.eth.getTransaction(artifact.networks[networkID].transactionHash);
+          creationBlock =  deployTx.blockNumber;
 
         } catch (err) {
           console.error(err);

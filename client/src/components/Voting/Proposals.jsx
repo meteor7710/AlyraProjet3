@@ -46,7 +46,6 @@ function Proposals({addProposalLog}) {
       <section className="proposals">
         <h3>Proposals</h3>
         <div>
-          <span>Proposals already whitelisted :</span>
           <table>
               <thead>
                 <tr>

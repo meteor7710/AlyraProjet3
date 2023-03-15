@@ -19423,10 +19423,94 @@
   },
   "networks": {
     "5": {
-      "events": {},
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x92e393e9b54e2f801d3ea4beb0c5e71a21cc34a5d34b77d0fb8a3aa1650dc18f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposalRegistered",
+          "type": "event"
+        },
+        "0x4d99b957a2bc29a30ebd96a7be8e68fe50a3c701db28a91436490b7d53870ca4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Voted",
+          "type": "event"
+        },
+        "0xb6be2187d059cc2a55fe29e0e503b566e1e0f8c8780096e185429350acffd3dd": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voterAddress",
+              "type": "address"
+            }
+          ],
+          "name": "VoterRegistered",
+          "type": "event"
+        },
+        "0x0a97a4ee45751e2abf3e4fc8946939630b11b371ea8ae39ccdc3056e98f5cc3f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "previousStatus",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "newStatus",
+              "type": "uint8"
+            }
+          ],
+          "name": "WorkflowStatusChange",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xE535b95eA50308660D7fD65d573fBC8f9a8267dA",
-      "transactionHash": "0xd4bcc8addebcf35600c5a9cb67598cb3bc7d2a013723c483c1d35a38cbf21b65"
+      "address": "0x7506aeEb3B0463fE590dBE81394f83c75C8569f3",
+      "transactionHash": "0x6e517a7ce952a2e7fc0db2c32a29c89d3d9429928f2861047a2a7beb64600d1a"
     },
     "1678224873118": {
       "events": {},
@@ -19439,10 +19523,28 @@
       "links": {},
       "address": "0x1e2cb92cef06aA1057bbb972449718F1eA59Cd6D",
       "transactionHash": "0xb975b751a307a62406497362104ed9a7ab756afefa60c33d790bc1046826350c"
+    },
+    "1678900237627": {
+      "events": {},
+      "links": {},
+      "address": "0x1e2cb92cef06aA1057bbb972449718F1eA59Cd6D",
+      "transactionHash": "0xb975b751a307a62406497362104ed9a7ab756afefa60c33d790bc1046826350c"
+    },
+    "1678901464893": {
+      "events": {},
+      "links": {},
+      "address": "0x1e2cb92cef06aA1057bbb972449718F1eA59Cd6D",
+      "transactionHash": "0xb975b751a307a62406497362104ed9a7ab756afefa60c33d790bc1046826350c"
+    },
+    "1678902760868": {
+      "events": {},
+      "links": {},
+      "address": "0x1e2cb92cef06aA1057bbb972449718F1eA59Cd6D",
+      "transactionHash": "0xb975b751a307a62406497362104ed9a7ab756afefa60c33d790bc1046826350c"
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-10T10:12:34.976Z",
+  "updatedAt": "2023-03-15T17:54:05.413Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kevin and Loic",

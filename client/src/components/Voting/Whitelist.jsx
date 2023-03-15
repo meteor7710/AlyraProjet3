@@ -5,19 +5,34 @@ function Whitelist({addressToWhitelistLog}) {
   const { state: { contract, accounts, creationBlock } } = useEth();
   const [registeredAddresses, setRegisteredAddresses] = useState();
 
-  //show address already whitelisted
+  //Get address already whitelisted
   useEffect(() => {
     (async function () {
       const voterRegisteredEvents= await contract.getPastEvents('VoterRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
       const voterAddresses=[];
 
-      voterRegisteredEvents.forEach(event => {
-        voterAddresses.push(event.returnValues.voterAddress);
-      });
+      console.log ("voterRegisteredEvents");
+      console.log(voterRegisteredEvents);
 
-      //Build a list of <li>address</li>
-      const listAdresses = voterAddresses.map((address,index) => <li key={"add"+index}>{address}</li>);
+      for (let i=0; i < voterRegisteredEvents.length ; i++)
+      {
+        voterAddresses.push(
+          {
+            blockNumber: voterRegisteredEvents[i].blockNumber,
+            voterAddress: voterRegisteredEvents[i].returnValues.voterAddress,
+          });
+      };
+
+      //Build table body of registered address
+      const listAdresses = voterAddresses.map((add,index) => 
+        <tr key={"add"+index}>
+          <td>{add.blockNumber}</td>
+          <td>{add.voterAddress}</td>
+        </tr>
+      );
+
       setRegisteredAddresses(listAdresses);
+
     })();
   }, [contract,accounts,creationBlock,addressToWhitelistLog])
 
@@ -27,9 +42,16 @@ function Whitelist({addressToWhitelistLog}) {
     <section className="whitelist">
       <h3>Whitelist</h3>
       <div>
-        <span>Address whitelisted :</span>
-        <ul>{registeredAddresses}</ul>
-      </div>
+          <table>
+              <thead>
+                <tr>
+                  <th>Registration Block Number</th>
+                  <th>Address Whitelisted</th>
+                </tr>
+              </thead>
+            <tbody>{registeredAddresses}</tbody>
+          </table>
+        </div>
     </section>
   );
 }
