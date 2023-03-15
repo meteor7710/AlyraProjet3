@@ -1,62 +1,59 @@
-//import { useState, useEffect } from "react";
-//import { useEth } from "../../contexts/EthContext";
+import { useState } from "react";
+import { useEth } from "../../contexts/EthContext";
 
 function Votes() {
-  /*const { state: { accounts, contract, artifact }} = useEth();
-  const [proposals, setVote] = useState([]);
+  const { state: { accounts, contract, creationBlock } } = useEth();
 
-  useEffect(() => {
-    async function getProposals() {
-      if (contract) {
-        const eventProposals = await contract.getPastEvents("ProposalRegistered", { fromBlock: 0, toBlock: "latest" });
-        const proposalsId = eventProposals.map((proposal) => proposal.returnValues._proposalId);
+  const [voteLog, setVoteLog] = useState([]);
+  const [proposalIDToVote, setProposalIDToVote] = useState("");
 
-        let proposalsDatas = [];
+  //Manage proposal input. It can only be interger
+  const handleIDChange = e => {
+    if (/^\d+$|^$/.test(e.target.value)) {
+      setProposalIDToVote(e.target.value);
+    }
+  };
 
-        for (const id of proposalsId) {
-          const proposal = await contract.methods.getOneProposal(parseInt(id)).call({ from: accounts[0] });
-          proposalsDatas.push(
-            {
-              key: id,
-              text: proposal.description,
-              value: id
-            }
-          );
-        }
-        setVote(proposalsDatas);
-      }
-    };
-    getProposals();
-  }, [accounts, contract, artifact]);
+  //Submit to contract
+  const voteProposalId = async () => {
 
-  const handleClick = async (proposalId) => {
-  await proposals(proposalId);
+    //Validate proposal ID
+    if (proposalIDToVote === "") {alert("Proposal ID must be not null");return; }
+    if (proposalIDToVote === "0") {alert("Proposal ID must be not 0");setProposalIDToVote("");return; }
+    const proposalRegisteredEvents= await contract.getPastEvents('ProposalRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
+    if (proposalIDToVote > proposalRegisteredEvents.length) {alert("Proposal ID must be lower or equal than "+proposalRegisteredEvents.length);setProposalIDToVote("");return; }
+
+    //Validate user has not already voted
+    const voterReturns = await contract.methods.getVoter(accounts[0]).call({ from: accounts[0] });
+    if ( voterReturns.hasVoted) { 
+      alert("You have already voted"); 
+      setProposalIDToVote("");
+      return;
+    }
+
+    if (await contract.methods.setVote(proposalIDToVote).call({ from: accounts[0] })) {
+      const setVoteTx = await contract.methods.setVote(proposalIDToVote).send({ from: accounts[0] });
+
+      setProposalIDToVote("");
+
+      const votedProposalID =  setVoteTx.events.Voted.returnValues.proposalId;
+      setVoteLog("Vote for proposal " + votedProposalID + " registered");
+    }
   }
 
-  //const handleVote = async () => {
-  //  await contract.methods.setVote(parseInt(selectedProposal)).send({ from: accounts[0] });
-  //  window.location.reload();
-  //}
-
   return (
-    <div className="votes">
+    <section className="votes">
       <h3>Votes</h3>
       <div>
-        <h4>Choose your favorite proposal !</h4>
-        <table>
-          <tbody>
-            {proposals.map((proposal) =>
-              <tr key={proposal.id}>
-                  <td>{proposal.id}</td>
-                  <td>{proposal.description}</td>
-              </tr>  
-            )}
-          </tbody>
-        </table>
-        <button onSubmit={() => handleClick("0")}>add your Vote</button>          
+        <label htmlFor="voteProposalId">Vote for a proposal : </label>
+        <input type="text" id="voteProposalId" name="voteProposalId" placeholder="Proposal ID" onChange={handleIDChange} value={proposalIDToVote} autoComplete="off" />
+        <button onClick={voteProposalId}>Submit vote</button>
       </div>
-    </div> 
-  );*/
+      <div>
+        <span>Logs : {voteLog}</span>
+      </div>
+    </section>
+  );
 }
 
 export default Votes;

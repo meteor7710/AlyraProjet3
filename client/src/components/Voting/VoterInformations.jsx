@@ -49,7 +49,8 @@ function VoterInformations() {
         <td>{user.votedProposalId}</td>
       </tr>
     );
-
+    
+    setVoterAddressToQuery("");
     setVoterInformations(voterRendered); 
   };
 

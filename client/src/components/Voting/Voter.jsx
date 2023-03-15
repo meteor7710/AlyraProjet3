@@ -1,5 +1,7 @@
 import Proposals from "./Proposals";
 import Votes from "./Votes";
+import VotesClosed from "./VotesClosed";
+import VotesNotOpened from "./VotesNotOpened";
 import ProposalInformations from "./ProposalInformations"
 import VoterInformations from "./VoterInformations"
 import useEth from "../../contexts/EthContext/useEth";
@@ -22,7 +24,11 @@ function Voter({addressToWhitelistLog,currentWorkflowStatus}) {
             <hr/>
             <Proposals addProposalLog={addProposalLog}/>
             <hr />
-            <Votes />
+            {
+                (currentWorkflowStatus < "3")  ? <VotesNotOpened /> :
+                (currentWorkflowStatus === "3")  ? <Votes/> :
+                <VotesClosed />
+            }
             <hr />
             <VoterInformations />
             <hr />
