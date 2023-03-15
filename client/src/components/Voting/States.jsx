@@ -20,14 +20,38 @@ function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,
       
       const workflowChanges=[];
 
-      workflowStatusEvents.forEach(event => {
+      /*workflowStatusEvents.forEach(event => {
         const eventChange = ("Change status from " + event.returnValues.previousStatus + " to " + event.returnValues.newStatus)
         workflowChanges.push( eventChange);
       });
 
       //Build a list of <li>event</li>
       const listEvents = workflowChanges.map((event,index) => <li key={"status"+index}>{event}</li>);
-      setWorkflowEvents(listEvents);
+      setWorkflowEvents(listEvents);*/
+
+      for (let i=0; i < workflowStatusEvents.length ; i++)
+      {
+        workflowChanges.push(
+          {
+            blockNumber: workflowStatusEvents[i].blockNumber,
+            previousStatus: workflowStatusEvents[i].returnValues.previousStatus,
+            newStatus: workflowStatusEvents[i].returnValues.newStatus,
+          });
+      };
+
+      //Build table body of registered address
+      const listWorkflowChanges = workflowChanges.map((status,index) => 
+        <tr key={"status"+index}>
+          <td>{status.blockNumber}</td>
+          <td>{status.previousStatus}</td>
+          <td>{status.newStatus}</td>
+        </tr>
+      );
+
+      setWorkflowEvents(listWorkflowChanges);
+
+
+
  
     })();
   }, [contract,creationBlock,workflowStatusLog])
@@ -115,7 +139,18 @@ function States({workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus,
       </div>
       <div>
         <span>Workflows status history :</span>
-        <ul>{workflowEvents}</ul>
+        <div>
+          <table>
+              <thead>
+                <tr>
+                  <th>Registration Block Number</th>
+                  <th>Previous Status</th>
+                  <th>Next Status</th>
+                </tr>
+              </thead>
+            <tbody>{workflowEvents}</tbody>
+          </table>
+        </div>
       </div>
     </section>
   );
