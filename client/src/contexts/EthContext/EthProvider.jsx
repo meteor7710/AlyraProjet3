@@ -20,7 +20,8 @@ function EthProvider({ children }) {
           //Add owner state to filter views
           owner = await contract.methods.owner().call();
           //Add contract creation block to reduce event queries
-          creationBlock =  artifact.networks[networkID].transactionHash;
+          const deployTx = await web3.eth.getTransaction(artifact.networks[networkID].transactionHash);
+          creationBlock =  deployTx.blockNumber;
 
         } catch (err) {
           console.error(err);
