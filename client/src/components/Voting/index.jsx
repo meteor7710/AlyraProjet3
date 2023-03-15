@@ -17,7 +17,7 @@ function Voting() {
     <>
       <div className="contract-container">
         <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
-        <Voter addressToWhitelistLog={addressToWhitelistLog}/>        
+        <Voter addressToWhitelistLog={addressToWhitelistLog} currentWorkflowStatus={currentWorkflowStatus}/>        
         <Result currentWorkflowStatus={currentWorkflowStatus}/>
       </div>
     </>;

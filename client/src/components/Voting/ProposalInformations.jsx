@@ -3,7 +3,7 @@ import useEth from "../../contexts/EthContext/useEth";
 
 function ProposalInformations() {
 
-  const { state: { contract, accounts } } = useEth();
+  const { state: { contract, accounts, creationBlock } } = useEth();
   const [proposalIDToQuery, setProposalIDToQuery] = useState("");
   const [proposalHistory, setProposalHistory] = useState([]);
   const [proposalInformations, setProposalInformations] = useState([]);
@@ -24,6 +24,12 @@ function ProposalInformations() {
 
   //Get proposal informations from an ID
   const getProposalInformation = async () => {
+
+    //Validate proposal ID
+    if (proposalIDToQuery === "") {alert("Proposal ID must be not null");return; }
+    if (proposalIDToQuery === "0") {alert("Proposal ID must be not 0");setProposalIDToQuery("");return; }
+    const proposalRegisteredEvents= await contract.getPastEvents('ProposalRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
+    if (proposalIDToQuery > proposalRegisteredEvents.length) {alert("Proposal ID must be lower or equal than "+proposalRegisteredEvents.length);setProposalIDToQuery("");return; }
        
     const proposalReturns = await contract.methods.getOneProposal(proposalIDToQuery).call({ from: accounts[0] });
 
@@ -49,7 +55,7 @@ function ProposalInformations() {
         <td>{prop.voteCount}</td>
       </tr>
     );
-
+    setProposalIDToQuery("");
     setProposalInformations(proposalRendered); 
   };
 

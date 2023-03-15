@@ -1,28 +1,10 @@
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Proposals() {
+function Proposals({addProposalLog}) {
   const { state: { contract, accounts, creationBlock } } = useEth();
-  const [proposalToAdd, setProposalToAdd] = useState();
-  const [addProposalLog, setAddProposalLog]= useState();
+
   const [proposalsInformations, setProposalsInformations] = useState([]);
-
-  //Manage Proposal input
-  const handleProposalChange = e => {
-    setProposalToAdd(e.target.value);
-  };
-
-  //Add Proposal
-  const addProposal = async () => {
-    if (proposalToAdd === "") {alert("Proposal description must be not null"); }
-
-    if (await contract.methods.addProposal(proposalToAdd).call({ from: accounts[0] })){
-      const addProposalTx = await contract.methods.addProposal(proposalToAdd).send({ from: accounts[0] });
-
-      const addedProposalId = addProposalTx.events.ProposalRegistered.returnValues.proposalId;
-      setAddProposalLog ("Proposal "+ addedProposalId+ " registered");
-    }
-  };
 
   //show proposal already registered
   useEffect(() => {
@@ -60,18 +42,9 @@ function Proposals() {
     })();
   }, [contract,accounts,creationBlock,addProposalLog])
   
-
   return (
       <section className="proposals">
         <h3>Proposals</h3>
-        <div>
-          <label htmlFor="AddProposal">Add address to whitelist : </label>
-          <textarea name="AddProposal" cols="40" rows="5"  placeholder="Add proposal description" onChange={handleProposalChange} value={proposalToAdd} autoComplete="off"></textarea>
-          <button onClick={addProposal}>Add Proposal </button>
-        </div>
-        <div>
-          <span>Logs : </span><span>{addProposalLog}</span>
-        </div>
         <div>
           <span>Proposals already whitelisted :</span>
           <table>
