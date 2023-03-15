@@ -1,6 +1,6 @@
 import Whitelist from "./Whitelist";
 import WhitelistRegistration from "./WhitelistRegistration";
-import WhitelistRegistrationClosed from "./WhiteistRegistrationClosed";
+import WhitelistRegistrationClosed from "./WhitelistRegistrationClosed";
 import States from "./States";
 import useEth from "../../contexts/EthContext/useEth";
 
