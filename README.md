@@ -7,3 +7,6 @@ go to ./
 go to ./truffle  
  - npm install --prefix . @openzeppelin/contracts
  - npm install --prefix .  dotenv
+
+go to ./client
+ - npm install --prefix .  @chakra-ui/react @emotion/react @emotion/styled framer-motion
