@@ -6,11 +6,12 @@ import Result from "./Result";
 import { useState, useEffect } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
+import { Text } from '@chakra-ui/react'
 
 function Voting() {
   const { state } = useEth();
   const { state: { accounts } } = useEth();
-  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState();
+  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState("");
   const [workflowStatusLog, setWorkflowStatusLog] = useState();
   const [currentWorkflowStatus, setCurrentWorkflowStatus] = useState();
   const [currentAddress, setCurrentAddress] = useState();
@@ -34,7 +35,7 @@ function Voting() {
   return (
     <div className="voting">
       <Title />
-      <span>Current Address : {currentAddress}</span>
+      <Text fontSize='lg'>Current Address : {currentAddress}</Text>
       {
         !state.artifact ? <NoticeNoArtifact /> :
           !state.contract ? <NoticeWrongNetwork /> :
