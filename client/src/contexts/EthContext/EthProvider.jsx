@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useEffect } from "react";
+import React, { useReducer, useCallback, useEffect, useState } from "react";
 import Web3 from "web3";
 import EthContext from "./EthContext";
 import { reducer, actions, initialState } from "./state";
@@ -60,12 +60,26 @@ function EthProvider({ children }) {
     };
   }, [init, state.artifact]);
 
+  const connectToMetaMask = async () => {
+    try {
+      await window.ethereum.enable();
+      const artifact = require("../../contracts/SimpleStorage.json");
+      init(artifact);
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   
   return (
     <EthContext.Provider value={{
       state,
       dispatch
     }}>
+      <div>
+        {account ? `Connecté avec l'adresse : ${account}` : <button onClick={connectToMetaMask}>Se connecter à MetaMask</button>}
+      </div>
       {children}
     </EthContext.Provider>
   );
