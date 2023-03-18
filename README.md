@@ -9,4 +9,4 @@ go to ./truffle
  - npm install --prefix .  dotenv
 
 go to ./client
- - npm install --prefix .  @chakra-ui/react @emotion/react @emotion/styled framer-motion
+ - npm install --prefix .  @chakra-ui/react @chakra-ui/icons @emotion/react @emotion/styled framer-motion

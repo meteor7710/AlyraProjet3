@@ -1,7 +1,8 @@
+import { Box, Table, TableCaption, TableContainer, Tbody, Thead, Td, Tr, Th, Heading } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Proposals({addProposalLog}) {
+function Proposals({ addProposalLog }) {
   const { state: { contract, accounts, creationBlock } } = useEth();
 
   const [proposalsInformations, setProposalsInformations] = useState([]);
@@ -11,19 +12,18 @@ function Proposals({addProposalLog}) {
     (async function () {
 
       //Get proposal information from a proposal ID
-      async function getProposalInformations(proposalId){
-        let proposal =[];
+      async function getProposalInformations(proposalId) {
+        let proposal = [];
         proposal = await contract.methods.getOneProposal(parseInt(proposalId)).call({ from: accounts[0] });
         return proposal;
       };
 
-      const proposalRegisteredEvents= await contract.getPastEvents('ProposalRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
-      const proposalsList=[];
+      const proposalRegisteredEvents = await contract.getPastEvents('ProposalRegistered', { fromBlock: creationBlock, toBlock: 'latest' });
+      const proposalsList = [];
 
-      for (let i=0; i < proposalRegisteredEvents.length ; i++)
-      {
+      for (let i = 0; i < proposalRegisteredEvents.length; i++) {
         let proposal = [];
-        proposal = await getProposalInformations(i+1);
+        proposal = await getProposalInformations(i + 1);
 
         proposalsList.push(
           {
@@ -32,31 +32,34 @@ function Proposals({addProposalLog}) {
           });
       };
 
-      const listProposal = proposalsList.map((prop,index) => 
-        <tr key={"proposal"+index}>
-          <td>{prop.id}</td>
-          <td>{prop.description}</td>
-        </tr>
+      const listProposal = proposalsList.map((prop, index) =>
+        <Tr key={"proposal" + index}>
+          <Td>{prop.id}</Td>
+          <Td>{prop.description}</Td>
+        </Tr>
       );
       setProposalsInformations(listProposal);
     })();
-  }, [contract,accounts,creationBlock,addProposalLog])
-  
+  }, [contract, accounts, creationBlock, addProposalLog])
+
   return (
-      <section className="proposals">
-        <h3>Proposals</h3>
-        <div>
-          <table>
-              <thead>
-                <tr>
-                  <th>Proposal ID</th>
-                  <th>Proposal Description</th>
-                </tr>
-              </thead>
-            <tbody>{proposalsInformations}</tbody>
-          </table>
-        </div>
-      </section>
+    <section className="proposals">
+      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+        <Heading as='h3' size='lg'>Proposals</Heading>
+        <TableContainer maxHeight="380px" overflowY="auto">
+          <Table>
+          <TableCaption>Proposals list</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Proposal ID</Th>
+                <Th>Proposal Description</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{proposalsInformations}</Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </section>
   );
 }
 
