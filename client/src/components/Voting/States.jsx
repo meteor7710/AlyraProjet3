@@ -108,7 +108,7 @@ function States({ workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus
     <section className="states">
       <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>States</Heading>
-        <Text m="25px">Current workflow status : {currentWorkflowStatus}</Text>
+        <Alert my="10px" width="auto" status='info' borderRadius="25px"> <AlertIcon />Current workflow status : {currentWorkflowStatus}</Alert>
         <Box m="25px">
           <Flex>
             <Text my="25px">Change workflow status actions :</Text>
