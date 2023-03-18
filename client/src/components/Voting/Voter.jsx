@@ -2,8 +2,10 @@ import Proposals from "./Proposals";
 import Votes from "./Votes";
 import VotesClosed from "./VotesClosed";
 import VotesNotOpened from "./VotesNotOpened";
-import ProposalInformations from "./ProposalInformations"
-import VoterInformations from "./VoterInformations"
+import ProposalInformations from "./ProposalInformations";
+import VoterInformations from "./VoterInformations";
+import NotRegistered from "./NotRegistered";
+import Result from "./Result";
 import useEth from "../../contexts/EthContext/useEth";
 import ProposalRegistration from "./ProposalRegistration";
 import ProposalRegistrationClosed from "./ProposalRegistrationClosed";
@@ -29,6 +31,7 @@ function Voter({ addressToWhitelistLog, currentWorkflowStatus }) {
             }
             <VoterInformations />
             <ProposalInformations />
+            <Result currentWorkflowStatus={currentWorkflowStatus} />
         </>;
 
     const [addressIsVoter, setAddressIsVoter] = useState(false);
@@ -49,7 +52,7 @@ function Voter({ addressToWhitelistLog, currentWorkflowStatus }) {
         <div className="Voter">
             {
                 (addressIsVoter) ? voterTools :
-                    <span></span>
+                    <NotRegistered />
             }
         </div>
     );

@@ -44,7 +44,7 @@ function Proposals({ addProposalLog }) {
 
   return (
     <section className="proposals">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>Proposals</Heading>
         <TableContainer maxHeight="380px" overflowY="auto">
           <Table>

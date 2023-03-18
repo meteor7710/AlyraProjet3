@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useEth } from "../../contexts/EthContext";
 import { Heading, Input, Button, FormControl, FormLabel, Text, Box, Alert, AlertIcon, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogContent, AlertDialogOverlay, useDisclosure, Flex, Spacer, Center } from '@chakra-ui/react';
-
 
 function Votes() {
   const { state: { accounts, contract, creationBlock } } = useEth();
@@ -9,6 +8,14 @@ function Votes() {
   const [proposalIDToVote, setProposalIDToVote] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [errorMsg, setErrorMsg] = useState("");
+
+  //Clean log when we change user
+  useEffect(() => {
+    (async function () {
+      setVoteLog("");
+      setProposalIDToVote("");
+    })();
+  }, [accounts])
 
   //Manage proposal input. It can only be interger
   const handleIDChange = e => {
@@ -33,16 +40,15 @@ function Votes() {
     if (await contract.methods.setVote(proposalIDToVote).call({ from: accounts[0] })) {
       const setVoteTx = await contract.methods.setVote(proposalIDToVote).send({ from: accounts[0] });
 
-      setProposalIDToVote("");
-
       const votedProposalID = setVoteTx.events.Voted.returnValues.proposalId;
       setVoteLog("Vote for proposal " + votedProposalID + " registered");
+      setProposalIDToVote("");
     }
   }
 
   return (
     <section className="votes">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>Votes</Heading>
         <Box m="25px" >
           <FormControl >
@@ -60,7 +66,7 @@ function Votes() {
           </FormControl>
         </Box>
         <Box>
-          {(voteLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {voteLog} </Alert>) :
+          {(voteLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {voteLog} </Alert>) :
             <Text></Text>}
         </Box>
 
@@ -69,7 +75,7 @@ function Votes() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogBody>
-              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />{errorMsg}</Alert>
+              <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />{errorMsg}</Alert>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>Close</Button>

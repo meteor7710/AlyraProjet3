@@ -106,26 +106,26 @@ function States({ workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus
 
   return (
     <section className="states">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>States</Heading>
-        <Text m="25px">Current workflow status : {currentWorkflowStatus}</Text>
+        <Alert my="10px" width="auto" status='info' borderRadius="25px"> <AlertIcon />Current workflow status : {currentWorkflowStatus}</Alert>
         <Box m="25px">
           <Flex>
             <Text my="25px">Change workflow status actions :</Text>
             <Center mx="25px">
               {
-                (currentWorkflowStatus === "0") ? <Button colorScheme='gray' onClick={startProposals}>Start propossals registration</Button> :
-                  (currentWorkflowStatus === "1") ? <Button colorScheme='gray' onClick={endProposals}>End propossals registration</Button> :
+                (currentWorkflowStatus === "0") ? <Button colorScheme='gray' onClick={startProposals}>Start proposals registration</Button> :
+                  (currentWorkflowStatus === "1") ? <Button colorScheme='gray' onClick={endProposals}>End proposals registration</Button> :
                     (currentWorkflowStatus === "2") ? <Button colorScheme='gray' onClick={startVoting}>Start voting session</Button> :
                       (currentWorkflowStatus === "3") ? <Button colorScheme='gray' onClick={endVoting}>End voting session</Button> :
                         (currentWorkflowStatus === "4") ? <Button colorScheme='gray' onClick={tallyVotes}>Tally votes</Button> :
-                          <Alert status='warning' borderRadius='5px'> <AlertIcon />Vote Session Finished</Alert>
+                          <Alert status='warning' borderRadius='25px'> <AlertIcon />Vote Session Finished</Alert>
               }
             </Center>
           </Flex>
         </Box>
         <Box>
-          {(workflowStatusLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {workflowStatusLog} </Alert>) :
+          {(workflowStatusLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {workflowStatusLog} </Alert>) :
             <Text></Text>}
         </Box>
         <TableContainer>

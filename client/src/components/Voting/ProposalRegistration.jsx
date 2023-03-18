@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import { Heading, Textarea, Button, FormControl, FormLabel, Text, Box, Alert, AlertIcon, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogContent, AlertDialogOverlay, useDisclosure, Flex, Spacer } from '@chakra-ui/react';
 
 function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
   const { state: { contract, accounts } } = useEth();
   const [proposalToAdd, setProposalToAdd] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //Clean log and input when we change user
+  useEffect(() => {
+    (async function () {
+      setAddProposalLog("");
+      setProposalToAdd("");
+    })();
+  }, [accounts,setAddProposalLog])
 
   //Manage Proposal input
   const handleProposalChange = e => {
@@ -21,12 +29,13 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
 
       const addedProposalId = addProposalTx.events.ProposalRegistered.returnValues.proposalId;
       setAddProposalLog("Proposal " + addedProposalId + " registered");
+      setProposalToAdd("");
     }
   };
 
   return (
     <section className="proposalRegistration">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>Proposal Registration</Heading>
         <Box m="25px" >
           <FormControl >
@@ -42,7 +51,7 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
           </FormControl>
         </Box>
         <Box>
-          {(addProposalLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {addProposalLog} </Alert>) :
+          {(addProposalLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {addProposalLog} </Alert>) :
             <Text></Text>}
         </Box>
       </Box>
@@ -50,7 +59,7 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogBody>
-              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />Proposal description can't be null.</Alert>
+              <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />Proposal description can't be null.</Alert>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>Close</Button>
