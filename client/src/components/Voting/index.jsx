@@ -2,7 +2,6 @@ import useEth from "../../contexts/EthContext/useEth";
 import Title from "./AddressConnected";
 import Owner from "./Owner";
 import Voter from "./Voter";
-import Result from "./Result";
 import Footer from "./Footer";
 import { useState, useEffect } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
@@ -29,7 +28,6 @@ function Voting() {
     <>
       <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus} />
       <Voter addressToWhitelistLog={addressToWhitelistLog} currentWorkflowStatus={currentWorkflowStatus} />
-      <Result currentWorkflowStatus={currentWorkflowStatus} />
     </>;
 
   return (
