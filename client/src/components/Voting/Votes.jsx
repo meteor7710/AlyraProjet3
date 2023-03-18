@@ -40,10 +40,9 @@ function Votes() {
     if (await contract.methods.setVote(proposalIDToVote).call({ from: accounts[0] })) {
       const setVoteTx = await contract.methods.setVote(proposalIDToVote).send({ from: accounts[0] });
 
-      setProposalIDToVote("");
-
       const votedProposalID = setVoteTx.events.Voted.returnValues.proposalId;
       setVoteLog("Vote for proposal " + votedProposalID + " registered");
+      setProposalIDToVote("");
     }
   }
 

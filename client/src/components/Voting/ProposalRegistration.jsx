@@ -29,6 +29,7 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
 
       const addedProposalId = addProposalTx.events.ProposalRegistered.returnValues.proposalId;
       setAddProposalLog("Proposal " + addedProposalId + " registered");
+      setProposalToAdd("");
     }
   };
 
