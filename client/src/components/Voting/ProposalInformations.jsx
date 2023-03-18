@@ -97,7 +97,7 @@ function ProposalInformations() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogBody>
-              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />{errorMsg}</Alert>
+              <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />{errorMsg}</Alert>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>Close</Button>

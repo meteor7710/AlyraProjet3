@@ -119,13 +119,13 @@ function States({ workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus
                     (currentWorkflowStatus === "2") ? <Button colorScheme='gray' onClick={startVoting}>Start voting session</Button> :
                       (currentWorkflowStatus === "3") ? <Button colorScheme='gray' onClick={endVoting}>End voting session</Button> :
                         (currentWorkflowStatus === "4") ? <Button colorScheme='gray' onClick={tallyVotes}>Tally votes</Button> :
-                          <Alert status='warning' borderRadius='5px'> <AlertIcon />Vote Session Finished</Alert>
+                          <Alert status='warning' borderRadius='25px'> <AlertIcon />Vote Session Finished</Alert>
               }
             </Center>
           </Flex>
         </Box>
         <Box>
-          {(workflowStatusLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {workflowStatusLog} </Alert>) :
+          {(workflowStatusLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {workflowStatusLog} </Alert>) :
             <Text></Text>}
         </Box>
         <TableContainer>

@@ -44,7 +44,7 @@ function WhitelistRegistration({ addressToWhitelistLog, setAddressToWhitelistLog
                     </FormControl>
                 </Box>
                 <Box>
-                    {(addressToWhitelistLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {addressToWhitelistLog} </Alert>) :
+                    {(addressToWhitelistLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {addressToWhitelistLog} </Alert>) :
                         <Text></Text>}
                 </Box>
             </Box>
@@ -52,7 +52,7 @@ function WhitelistRegistration({ addressToWhitelistLog, setAddressToWhitelistLog
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogBody>
-                            <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />Address submitted is invalid.</Alert>
+                            <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />Address submitted is invalid.</Alert>
                         </AlertDialogBody>
                         <AlertDialogFooter>
                             <Button onClick={onClose}>Close</Button>

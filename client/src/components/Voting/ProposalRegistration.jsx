@@ -42,7 +42,7 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
           </FormControl>
         </Box>
         <Box>
-          {(addProposalLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {addProposalLog} </Alert>) :
+          {(addProposalLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {addProposalLog} </Alert>) :
             <Text></Text>}
         </Box>
       </Box>
@@ -50,7 +50,7 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogBody>
-              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />Proposal description can't be null.</Alert>
+              <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />Proposal description can't be null.</Alert>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>Close</Button>

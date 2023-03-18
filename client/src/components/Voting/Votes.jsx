@@ -60,7 +60,7 @@ function Votes() {
           </FormControl>
         </Box>
         <Box>
-          {(voteLog !== "") ? (<Alert width="auto" status='success' borderRadius='5px'> <AlertIcon /> {voteLog} </Alert>) :
+          {(voteLog !== "") ? (<Alert width="auto" status='success' borderRadius='25px'> <AlertIcon /> {voteLog} </Alert>) :
             <Text></Text>}
         </Box>
 
@@ -69,7 +69,7 @@ function Votes() {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogBody>
-              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />{errorMsg}</Alert>
+              <Alert width="auto" status='error' borderRadius='25px'> <AlertIcon />{errorMsg}</Alert>
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button onClick={onClose}>Close</Button>

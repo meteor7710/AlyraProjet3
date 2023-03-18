@@ -45,7 +45,7 @@ function Result({ currentWorkflowStatus }) {
         <Heading as='h3' size='lg'>Result</Heading>
         {
           (currentWorkflowStatus === "5") ? <Box>{result}</Box> :
-            <Alert width="auto" my="25px" status='warning' borderRadius='5px'> <AlertIcon />Votes are not tallied</Alert>
+            <Alert width="auto" my="25px" status='warning' borderRadius='25px'> <AlertIcon />Votes are not tallied</Alert>
         }
       </Box>
     </section>
