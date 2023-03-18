@@ -1,5 +1,6 @@
+import { Heading } from '@chakra-ui/react'
 function Title() {
-  return <h2>Voting Contract</h2>;
+  return <Heading as='h2' noOfLines={1}>Voting Contract</Heading>;
 }
 
 export default Title;

@@ -10,44 +10,40 @@ import ProposalRegistrationClosed from "./ProposalRegistrationClosed";
 import ProposalRegistrationNotOpened from "./ProposalRegistrationNotOpened";
 import { useState, useEffect } from "react";
 
-function Voter({addressToWhitelistLog,currentWorkflowStatus}) {
-    const { state: {  contract, accounts } } = useEth();
-    const [addProposalLog, setAddProposalLog]= useState();
+function Voter({ addressToWhitelistLog, currentWorkflowStatus }) {
+    const { state: { contract, accounts, creationBlock } } = useEth();
+    const [addProposalLog, setAddProposalLog] = useState("");
 
     const voterTools =
         <>
             {
-                (currentWorkflowStatus === "0")  ? <ProposalRegistrationNotOpened /> :
-                (currentWorkflowStatus === "1")  ? <ProposalRegistration  addProposalLog={addProposalLog}  setAddProposalLog={setAddProposalLog}/> :
-                <ProposalRegistrationClosed />
+                (currentWorkflowStatus === "0") ? <ProposalRegistrationNotOpened /> :
+                    (currentWorkflowStatus === "1") ? <ProposalRegistration addProposalLog={addProposalLog} setAddProposalLog={setAddProposalLog} /> :
+                        <ProposalRegistrationClosed />
             }
-            <hr/>
-            <Proposals addProposalLog={addProposalLog}/>
-            <hr />
+            <Proposals addProposalLog={addProposalLog} />
             {
-                (currentWorkflowStatus < "3")  ? <VotesNotOpened /> :
-                (currentWorkflowStatus === "3")  ? <Votes/> :
-                <VotesClosed />
+                (currentWorkflowStatus < "3") ? <VotesNotOpened /> :
+                    (currentWorkflowStatus === "3") ? <Votes /> :
+                        <VotesClosed />
             }
-            <hr />
             <VoterInformations />
-            <hr />
             <ProposalInformations />
-            <hr />
         </>;
 
-const [addressIsVoter, setAddressIsVoter] = useState(false);
+    const [addressIsVoter, setAddressIsVoter] = useState(false);
 
-//show address already whitelisted
-useEffect(() => {
-    (async function () {
-        const voters = await contract.getPastEvents("VoterRegistered", { fromBlock: 0, toBlock: "latest" });
-        const findVoter =  voters.find((address) => address.returnValues.voterAddress === accounts[0]);
+    //show address already whitelisted
+    useEffect(() => {
+        (async function () {
+            const voters = await contract.getPastEvents("VoterRegistered", { fromBlock: creationBlock, toBlock: "latest" });
+            const findVoter = voters.find((address) => address.returnValues.voterAddress === accounts[0]);
 
-        if (findVoter) {setAddressIsVoter(true);}
-      
-    })();
-  }, [contract,accounts,addressToWhitelistLog])
+            if (findVoter) { setAddressIsVoter(true); }
+            else { setAddressIsVoter(false); }
+
+        })();
+    }, [contract, accounts, creationBlock, addressToWhitelistLog])
 
     return (
         <div className="Voter">

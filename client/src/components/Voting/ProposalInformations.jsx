@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
+import { useDisclosure, Alert, AlertIcon, AlertDialog, AlertDialogFooter, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, Heading, Input, Button, FormControl, Flex, Box, Th, Tr, Td, Thead, Tbody, Spacer, Table, TableContainer, TableCaption } from '@chakra-ui/react';
 
 function ProposalInformations() {
 
@@ -7,6 +8,8 @@ function ProposalInformations() {
   const [proposalIDToQuery, setProposalIDToQuery] = useState("");
   const [proposalHistory, setProposalHistory] = useState([]);
   const [proposalInformations, setProposalInformations] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
 
   //Manage proposal input. It can only be interger
@@ -26,11 +29,11 @@ function ProposalInformations() {
   const getProposalInformation = async () => {
 
     //Validate proposal ID
-    if (proposalIDToQuery === "") {alert("Proposal ID must be not null");return; }
-    if (proposalIDToQuery === "0") {alert("Proposal ID must be not 0");setProposalIDToQuery("");return; }
-    const proposalRegisteredEvents= await contract.getPastEvents('ProposalRegistered', {fromBlock: creationBlock,toBlock: 'latest'});
-    if (proposalIDToQuery > proposalRegisteredEvents.length) {alert("Proposal ID must be lower or equal than "+proposalRegisteredEvents.length);setProposalIDToQuery("");return; }
-       
+    if (proposalIDToQuery === "") { setErrorMsg("Proposal ID must be not null"); onOpen(); return; }
+    if (proposalIDToQuery === "0") { setErrorMsg("Proposal ID must be not 0"); onOpen(); setProposalIDToQuery(""); return; }
+    const proposalRegisteredEvents = await contract.getPastEvents('ProposalRegistered', { fromBlock: creationBlock, toBlock: 'latest' });
+    if (proposalIDToQuery > proposalRegisteredEvents.length) { setErrorMsg("Proposal ID must be lower or equal than " + proposalRegisteredEvents.length); onOpen(); setProposalIDToQuery(""); return; }
+
     const proposalReturns = await contract.methods.getOneProposal(proposalIDToQuery).call({ from: accounts[0] });
 
     let proposalDisplay = [];
@@ -44,42 +47,64 @@ function ProposalInformations() {
         voteCount: proposalReturns.voteCount.toString(),
       }
     )
-    
-     //manage proposals informations request history
+
+    //manage proposals informations request history
     setProposalHistory(proposalDisplay);
 
-    const proposalRendered = proposalDisplay.map((prop,index) => 
-      <tr key={"prop"+index}>
-        <td>{prop.id}</td>
-        <td>{prop.description}</td>
-        <td>{prop.voteCount}</td>
-      </tr>
+    const proposalRendered = proposalDisplay.map((prop, index) =>
+      <Tr key={"prop" + index}>
+        <Td>{prop.id}</Td>
+        <Td>{prop.description}</Td>
+        <Td>{prop.voteCount}</Td>
+      </Tr>
     );
     setProposalIDToQuery("");
-    setProposalInformations(proposalRendered); 
+    setProposalInformations(proposalRendered);
   };
 
   return (
     <section className="proposalInformations">
-      <h3>Proposal Informations</h3>
-      <div>
-        <label htmlFor="proposalInformation">Get proposal informations : </label>
-        <input type="text" id="proposalInformation" name="proposalInformation" placeholder="Add proposal ID" onChange={handleIDChange} value={proposalIDToQuery} autoComplete="off"/>
-        <button onClick={getProposalInformation}>Get informations</button>
-        <button onClick={resetProposalHistory}>Reset informations</button>
-      </div>
-      <div>
-        <table>
-            <thead>
-              <tr>
-                <th>Proposal ID</th>
-                <th>Proposal description</th>
-                <th>Proposal vote count</th>
-              </tr>
-            </thead>
-            <tbody>{proposalInformations}</tbody>
-        </table>
-      </div>
+      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+        <Heading as='h3' size='lg'>Get proposal informations</Heading>
+        <Box m="25px" >
+          <FormControl >
+            <Flex>
+              <Spacer />
+              <Input width='400px' type='text' placeholder="Add proposal ID" onChange={handleIDChange} value={proposalIDToQuery} autoComplete="off" />
+              <Spacer />
+              <Button colorScheme='gray' onClick={getProposalInformation}>Get informations</Button>
+              <Spacer />
+              <Button colorScheme='gray' onClick={resetProposalHistory}>Clean informations</Button>
+              <Spacer />
+            </Flex>
+          </FormControl>
+        </Box>
+        <TableContainer maxHeight="380px" overflowY="auto">
+          <Table>
+            <TableCaption>Proposals informations</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Proposal ID</Th>
+                <Th>Proposal description</Th>
+                <Th>Proposal vote count</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{proposalInformations}</Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <AlertDialog isOpen={isOpen} onClose={onClose} >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogBody>
+              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />{errorMsg}</Alert>
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={onClose}>Close</Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </section>
   );
 }

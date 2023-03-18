@@ -3,43 +3,47 @@ import Title from "./Title";
 import Owner from "./Owner";
 import Voter from "./Voter";
 import Result from "./Result";
+import Footer from "./Footer";
 import { useState, useEffect } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
+import { Text, Box, Container } from '@chakra-ui/react';
 
 function Voting() {
   const { state } = useEth();
   const { state: { accounts } } = useEth();
-  const [addressToWhitelistLog, setAddressToWhitelistLog]= useState();
-  const [workflowStatusLog, setWorkflowStatusLog] = useState();
+  const [addressToWhitelistLog, setAddressToWhitelistLog] = useState("");
+  const [workflowStatusLog, setWorkflowStatusLog] = useState("");
   const [currentWorkflowStatus, setCurrentWorkflowStatus] = useState();
-  const [currentAddress, setCurrentAddress] = useState();
+  const [currentAddress, setCurrentAddress] = useState("");
 
   useEffect(() => {
     (async function () {
-      setCurrentAddress(accounts[0])
+      if (accounts) {
+        setCurrentAddress(accounts[0])
+      }
     })();
   }, [accounts])
 
-
   const voting =
     <>
-      <div className="contract-container">
-        <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
-        <Voter addressToWhitelistLog={addressToWhitelistLog} currentWorkflowStatus={currentWorkflowStatus}/>        
-        <Result currentWorkflowStatus={currentWorkflowStatus}/>
-      </div>
+      <Owner addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus} />
+      <Voter addressToWhitelistLog={addressToWhitelistLog} currentWorkflowStatus={currentWorkflowStatus} />
+      <Result currentWorkflowStatus={currentWorkflowStatus} />
     </>;
 
   return (
-    <div className="voting">
+    <div>
       <Title />
-      <span>Current Address : {currentAddress}</span>
-      {
-        !state.artifact ? <NoticeNoArtifact /> :
-          !state.contract ? <NoticeWrongNetwork /> :
-          voting
-      }
+      <Text fontSize='lg'>Current Address : {currentAddress}</Text>
+      <Container maxW="4xl">
+        {
+          !state.artifact ? <NoticeNoArtifact /> :
+            !state.contract ? <NoticeWrongNetwork /> :
+              <Box>{voting}</Box>
+        }
+      </Container>
+      <Footer />
     </div>
   );
 }
