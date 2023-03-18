@@ -114,8 +114,8 @@ function States({ workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus
             <Text my="25px">Change workflow status actions :</Text>
             <Center mx="25px">
               {
-                (currentWorkflowStatus === "0") ? <Button colorScheme='gray' onClick={startProposals}>Start propossals registration</Button> :
-                  (currentWorkflowStatus === "1") ? <Button colorScheme='gray' onClick={endProposals}>End propossals registration</Button> :
+                (currentWorkflowStatus === "0") ? <Button colorScheme='gray' onClick={startProposals}>Start proposals registration</Button> :
+                  (currentWorkflowStatus === "1") ? <Button colorScheme='gray' onClick={endProposals}>End proposals registration</Button> :
                     (currentWorkflowStatus === "2") ? <Button colorScheme='gray' onClick={startVoting}>Start voting session</Button> :
                       (currentWorkflowStatus === "3") ? <Button colorScheme='gray' onClick={endVoting}>End voting session</Button> :
                         (currentWorkflowStatus === "4") ? <Button colorScheme='gray' onClick={tallyVotes}>Tally votes</Button> :
