@@ -7,10 +7,11 @@ function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
   const [proposalToAdd, setProposalToAdd] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //Clean log when we change user
+  //Clean log and input when we change user
   useEffect(() => {
     (async function () {
       setAddProposalLog("");
+      setProposalToAdd("");
     })();
   }, [accounts,setAddProposalLog])
 

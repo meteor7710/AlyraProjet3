@@ -13,6 +13,7 @@ function Votes() {
   useEffect(() => {
     (async function () {
       setVoteLog("");
+      setProposalIDToVote("");
     })();
   }, [accounts])
 
