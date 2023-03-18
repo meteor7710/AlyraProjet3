@@ -1,4 +1,4 @@
-import { Box, Text, Alert, AlertIcon } from '@chakra-ui/react'
+import { Box, Text, Alert, AlertIcon } from '@chakra-ui/react';
 function AddressConnected({ currentAddress }) {
   return (
     <Box >

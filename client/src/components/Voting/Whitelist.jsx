@@ -29,7 +29,6 @@ function Whitelist({ addressToWhitelistLog }) {
       );
 
       setRegisteredAddresses(listAdresses);
-
     })();
   }, [contract, accounts, creationBlock, addressToWhitelistLog])
 
