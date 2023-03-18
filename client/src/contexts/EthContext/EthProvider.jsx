@@ -38,7 +38,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/SimpleStorage.json");
+        const artifact = require("../../contracts/Voting.json");
         init(artifact);
       } catch (err) {
         console.error(err);
@@ -63,7 +63,7 @@ function EthProvider({ children }) {
   const connectToMetaMask = async () => {
     try {
       await window.ethereum.enable();
-      const artifact = require("../../contracts/SimpleStorage.json");
+      const artifact = require("../../contracts/Voting.json");
       init(artifact);
       window.location.reload();
     } catch (err) {
