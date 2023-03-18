@@ -106,7 +106,7 @@ function States({ workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus
 
   return (
     <section className="states">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>States</Heading>
         <Text m="25px">Current workflow status : {currentWorkflowStatus}</Text>
         <Box m="25px">

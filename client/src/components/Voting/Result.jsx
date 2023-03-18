@@ -41,7 +41,7 @@ function Result({ currentWorkflowStatus }) {
 
   return (
     <section className="result">
-      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+      <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>Result</Heading>
         {
           (currentWorkflowStatus === "5") ? <Box>{result}</Box> :
