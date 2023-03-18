@@ -1,5 +1,5 @@
 import useEth from "../../contexts/EthContext/useEth";
-import Title from "./Title";
+import Title from "./AddressConnected";
 import Owner from "./Owner";
 import Voter from "./Voter";
 import Result from "./Result";
@@ -7,7 +7,7 @@ import Footer from "./Footer";
 import { useState, useEffect } from "react";
 import NoticeNoArtifact from "./NoticeNoArtifact";
 import NoticeWrongNetwork from "./NoticeWrongNetwork";
-import { Text, Box, Container } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 
 function Voting() {
   const { state } = useEth();
@@ -34,9 +34,8 @@ function Voting() {
 
   return (
     <div>
-      <Title />
-      <Text fontSize='lg'>Current Address : {currentAddress}</Text>
       <Container maxW="4xl">
+      <Title currentAddress={currentAddress}/>
         {
           !state.artifact ? <NoticeNoArtifact /> :
             !state.contract ? <NoticeWrongNetwork /> :

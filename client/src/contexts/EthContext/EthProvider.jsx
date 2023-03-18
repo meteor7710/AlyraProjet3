@@ -2,6 +2,8 @@ import React, { useReducer, useCallback, useEffect, useState } from "react";
 import Web3 from "web3";
 import EthContext from "./EthContext";
 import { reducer, actions, initialState } from "./state";
+import { Button, Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -22,7 +24,7 @@ function EthProvider({ children }) {
           owner = await contract.methods.owner().call();
           //Add contract creation block to reduce event queries
           const deployTx = await web3.eth.getTransaction(artifact.networks[networkID].transactionHash);
-          creationBlock =  deployTx.blockNumber;
+          creationBlock = deployTx.blockNumber;
 
         } catch (err) {
           console.error(err);
@@ -71,15 +73,24 @@ function EthProvider({ children }) {
     }
   };
 
-  
+
   return (
     <EthContext.Provider value={{
       state,
       dispatch
     }}>
-      <div>
-        {account ? `Connecté avec l'adresse : ${account}` : <button onClick={connectToMetaMask}>Se connecter à MetaMask</button>}
-      </div>
+      <header>
+        <Box p="10px" background="gray.200">
+        <Flex justifyContent="space-between" alignItems="center" width="100%">
+            <Box width="30%"><CheckCircleIcon boxSize={10}/></Box>
+            <Heading as='h1' size='lg'>My Voting dApp</Heading>
+            {
+            account ? <Text width="30%" ></Text> :
+              <Button width="30%" colorScheme="orange" onClick={connectToMetaMask}>Connect to MetaMask</Button>
+          }
+        </Flex>
+        </Box>
+      </header>
       {children}
     </EthContext.Provider>
   );
