@@ -4,19 +4,17 @@ import WhitelistRegistrationClosed from "./WhitelistRegistrationClosed";
 import States from "./States";
 import useEth from "../../contexts/EthContext/useEth";
 
-function Owner({addressToWhitelistLog,setAddressToWhitelistLog,workflowStatusLog, setWorkflowStatusLog,currentWorkflowStatus,setCurrentWorkflowStatus}) {
+function Owner({ addressToWhitelistLog, setAddressToWhitelistLog, workflowStatusLog, setWorkflowStatusLog, currentWorkflowStatus, setCurrentWorkflowStatus }) {
     const { state: { accounts, owner } } = useEth();
 
     const ownerTools =
         <>
             {
-                (currentWorkflowStatus === "0")  ? <WhitelistRegistration  addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog}/> :
-                <WhitelistRegistrationClosed />
+                (currentWorkflowStatus === "0") ? <WhitelistRegistration addressToWhitelistLog={addressToWhitelistLog} setAddressToWhitelistLog={setAddressToWhitelistLog} /> :
+                    <WhitelistRegistrationClosed />
             }
-            <Whitelist addressToWhitelistLog={addressToWhitelistLog}/>
-            <hr />
-            <States workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus}/>
-            <hr />
+            <Whitelist addressToWhitelistLog={addressToWhitelistLog} />
+            <States workflowStatusLog={workflowStatusLog} setWorkflowStatusLog={setWorkflowStatusLog} currentWorkflowStatus={currentWorkflowStatus} setCurrentWorkflowStatus={setCurrentWorkflowStatus} />
         </>;
 
     return (
