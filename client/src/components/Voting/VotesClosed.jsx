@@ -1,11 +1,11 @@
-import { Heading, Box, Text } from '@chakra-ui/react';
+import { Heading, Box, Alert, AlertIcon } from '@chakra-ui/react';
 
 function VotesClosed() {
     return (
         <section className="Votes">
-            <Box  p="25px" border='1px' borderRadius='5px' borderColor='gray.200'>
+            <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
                 <Heading as='h3' size='lg'>Votes</Heading>
-                <Text>Votes are closed</Text>
+                <Alert width="auto" my="25px" status='warning' borderRadius='5px'> <AlertIcon />Votes are closed</Alert>
             </Box>
         </section>
     );

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useEth from "../../contexts/EthContext/useEth";
+import { useDisclosure, Alert, AlertIcon, AlertDialog, AlertDialogFooter, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, Heading, Input, Button, FormControl, Flex, Box, Th, Tr, Td, Thead, Tbody, Spacer, Table, TableContainer, TableCaption } from '@chakra-ui/react';
 
 function VoterInformations() {
 
@@ -7,6 +8,7 @@ function VoterInformations() {
   const [voterAddressToQuery, setVoterAddressToQuery] = useState("");
   const [voterHistory, setVoterHistory] = useState([]);
   const [voterInformations, setVoterInformations] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   //Manage address input
   const handleAdressToQueryChange = e => {
@@ -21,8 +23,8 @@ function VoterInformations() {
 
   //Get voter informations from an address
   const getVoterInformation = async () => {
-    if (!web3.utils.isAddress(voterAddressToQuery)) {alert("invalid address"); }
-    
+    if (!web3.utils.isAddress(voterAddressToQuery)) { onOpen(); return; }
+
     const voterReturns = await contract.methods.getVoter(voterAddressToQuery).call({ from: accounts[0] });
 
     let voterDisplay = [];
@@ -37,45 +39,67 @@ function VoterInformations() {
         votedProposalId: voterReturns.votedProposalId
       }
     )
-    
+
     //manage voters information request history
     setVoterHistory(voterDisplay);
 
-    const voterRendered = voterDisplay.map((user,index) => 
-      <tr key={"voter"+index}>
-        <td>{user.address}</td>
-        <td>{user.isRegistered}</td>
-        <td>{user.hasVoted}</td>
-        <td>{user.votedProposalId}</td>
-      </tr>
+    const voterRendered = voterDisplay.map((user, index) =>
+      <Tr key={"voter" + index}>
+        <Td>{user.address}</Td>
+        <Td>{user.isRegistered}</Td>
+        <Td>{user.hasVoted}</Td>
+        <Td>{user.votedProposalId}</Td>
+      </Tr>
     );
-    
+
     setVoterAddressToQuery("");
-    setVoterInformations(voterRendered); 
+    setVoterInformations(voterRendered);
   };
 
   return (
     <section className="voterInformations">
-      <h3>Voter Informations</h3>
-      <div>
-        <label htmlFor="voterInformation">Get voter informations : </label>
-        <input type="text" id="voterInformation" name="voterInformation" placeholder="Add voter address" onChange={handleAdressToQueryChange} value={voterAddressToQuery}  autoComplete="off"/>
-        <button onClick={getVoterInformation}>Get informations</button>
-        <button onClick={resetVoterHistory}>Clean informations</button>
-      </div>
-      <div>
-        <table>
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Is Registered</th>
-                <th>Has voted</th>
-                <th>Voted proposal ID</th>
-              </tr>
-            </thead>
-            <tbody>{voterInformations}</tbody>
-        </table>
-      </div>
+      <Box p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
+        <Heading as='h3' size='lg'>Get voter informations</Heading>
+        <Box m="25px" >
+          <FormControl >
+            <Flex>
+              <Spacer />
+              <Input width='400px' type='text' placeholder="Add voter address" onChange={handleAdressToQueryChange} value={voterAddressToQuery} autoComplete="off" />
+              <Spacer />
+              <Button colorScheme='gray' onClick={getVoterInformation}>Get informations</Button>
+              <Spacer />
+              <Button colorScheme='gray' onClick={resetVoterHistory}>Clean informations</Button>
+              <Spacer />
+            </Flex>
+          </FormControl>
+        </Box>
+        <TableContainer maxHeight="380px" overflowY="auto">
+          <Table>
+            <TableCaption>Voters informations</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Address</Th>
+                <Th>Is Registered</Th>
+                <Th>Has voted</Th>
+                <Th>Voted proposal ID</Th>
+              </Tr>
+            </Thead>
+            <Tbody>{voterInformations}</Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <AlertDialog isOpen={isOpen} onClose={onClose} >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogBody>
+              <Alert width="auto" status='error' borderRadius='5px'> <AlertIcon />Address submitted is invalid.</Alert>
+            </AlertDialogBody>
+            <AlertDialogFooter>
+              <Button onClick={onClose}>Close</Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </section>
   );
 }
