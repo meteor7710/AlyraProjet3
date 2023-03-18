@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useEth from "../../contexts/EthContext/useEth";
 import { Heading, Textarea, Button, FormControl, FormLabel, Text, Box, Alert, AlertIcon, AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogContent, AlertDialogOverlay, useDisclosure, Flex, Spacer } from '@chakra-ui/react';
 
 function ProposalRegistration({ addProposalLog, setAddProposalLog }) {
   const { state: { contract, accounts } } = useEth();
   const [proposalToAdd, setProposalToAdd] = useState("");
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  //Clean log when we change user
+  useEffect(() => {
+    (async function () {
+      setAddProposalLog("");
+    })();
+  }, [accounts,setAddProposalLog])
 
   //Manage Proposal input
   const handleProposalChange = e => {
