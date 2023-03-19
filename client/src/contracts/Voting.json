@@ -19509,8 +19509,8 @@
         }
       },
       "links": {},
-      "address": "0x7506aeEb3B0463fE590dBE81394f83c75C8569f3",
-      "transactionHash": "0x6e517a7ce952a2e7fc0db2c32a29c89d3d9429928f2861047a2a7beb64600d1a"
+      "address": "0xFf8C8fB965B8BBDD83a858DE40Ce2FF3012FA6F0",
+      "transactionHash": "0xd378e03aba7628ed0221ec8c96941a336009bee0a33900178040364fe79f725a"
     },
     "1678224873118": {
       "events": {},
@@ -19850,7 +19850,7 @@
     }
   },
   "schemaVersion": "3.4.11",
-  "updatedAt": "2023-03-18T21:34:26.742Z",
+  "updatedAt": "2023-03-19T11:09:49.018Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Kevin and Loic",
