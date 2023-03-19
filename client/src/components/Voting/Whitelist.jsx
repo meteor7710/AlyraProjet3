@@ -36,7 +36,7 @@ function Whitelist({ addressToWhitelistLog }) {
     <section className="whitelist">
       <Box my="10px" p="25px" border='1px' borderRadius='25px' borderColor='gray.200'>
         <Heading as='h3' size='lg'>Whitelist</Heading>
-        <TableContainer maxheight="380px" overflowY="auto">
+        <TableContainer maxHeight="380px" overflowY="auto">
           <Table>
             <TableCaption>Whitelisted adresses</TableCaption>
             <Thead>
